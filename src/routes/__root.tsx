@@ -2,7 +2,7 @@ import { Outlet, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
-
+import { Toaster } from '@/components/ui/sonner'
 import '../styles.css'
 
 export const Route = createRootRoute({
@@ -12,6 +12,7 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <>
+      <Toaster />
       <Outlet />
       <TanStackDevtools
         config={{
