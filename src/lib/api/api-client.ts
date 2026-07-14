@@ -43,21 +43,43 @@ export class ApiError extends Error {
   }
 }
 
+const isNativeBody = (body: unknown): body is BodyInit => {
+  return (
+    body instanceof FormData ||
+    body instanceof Blob ||
+    body instanceof ArrayBuffer ||
+    ArrayBuffer.isView(body) ||
+    body instanceof URLSearchParams ||
+    body instanceof ReadableStream ||
+    typeof body === 'string'
+  )
+}
+
+interface ApiOptions extends Omit<RequestInit, 'body'> {
+  body?: unknown
+  responseType?: 'json' | 'blob'
+}
+
 export const api = async <T = unknown>(
   path: string,
-  options: Omit<RequestInit, 'body'> & { body?: unknown } = {},
+  options: ApiOptions = {},
 ): Promise<T> => {
-  const { body, headers, ...rest } = options
+  const { body, headers, responseType = 'json', ...rest } = options
+
+  const nativeBody = body !== undefined && isNativeBody(body)
+  const jsonBody = body !== undefined && !nativeBody
 
   const doFetch = () =>
     fetch(`${API_URL}${path}`, {
       ...rest,
       credentials: 'include',
       headers: {
-        ...(body !== undefined && { 'Content-Type': 'application/json' }),
+        ...(jsonBody && { 'Content-Type': 'application/json' }),
         ...headers,
       },
-      ...(body !== undefined && { body: JSON.stringify(body) }),
+      ...(body !== undefined && {
+        body: nativeBody ? body : JSON.stringify(body),
+      }),
     })
 
   let response = await doFetch()
@@ -76,14 +98,16 @@ export const api = async <T = unknown>(
     response = await doFetch()
   }
 
-  const data: unknown =
-    response.status === 204 ? null : await response.json().catch(() => null)
-
   if (!response.ok) {
+    const errorBody: unknown = await response.json().catch(() => null)
     if (response.status === 401) onSessionExpired()
 
-    throw new ApiError(response.status, data)
+    throw new ApiError(response.status, errorBody)
   }
 
-  return data as T
+  if (response.status === 204) return null as T
+
+  if (responseType === 'blob') return (await response.blob()) as T
+
+  return (await response.json()) as T
 }
