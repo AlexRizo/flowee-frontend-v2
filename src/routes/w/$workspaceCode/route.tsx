@@ -1,3 +1,5 @@
+import { AppSidebar } from '#/components/layout/sidebar/app-sidebar'
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '#/components/ui/sidebar'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/w/$workspaceCode')({
@@ -6,9 +8,15 @@ export const Route = createFileRoute('/w/$workspaceCode')({
 
 function RouteComponent() {
   return (
-    <main>
-      <h1>{Route.id}</h1>
-      <Outlet />
-    </main>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <SidebarTrigger/>
+        <main>
+          <h1>{Route.id}</h1>
+          <Outlet />
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }
