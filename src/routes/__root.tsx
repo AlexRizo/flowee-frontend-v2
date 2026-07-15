@@ -4,6 +4,7 @@ import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import { Toaster } from '@/components/ui/sonner'
 import '../styles.css'
+import { TooltipProvider } from '#/components/ui/tooltip'
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -12,8 +13,10 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <>
-      <Toaster />
-      <Outlet />
+      <TooltipProvider>
+        <Toaster />
+        <Outlet />
+      </TooltipProvider>
       <TanStackDevtools
         config={{
           position: 'bottom-right',
