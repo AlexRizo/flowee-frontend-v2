@@ -10,6 +10,26 @@ const NO_REFRESH_PATHS = [
   '/auth/register',
 ]
 
+const FALLBACK_MESSAGE = 'Ocurrió un error inesperado'
+
+/**
+ * Extrae el `message` del body de Nest de forma segura (body es `unknown`:
+ * puede venir null, HTML de un proxy, un fallo de red, etc.).
+ * - Excepción normal (throw): `message` es string → se devuelve tal cual.
+ * - class-validator (ValidationPipe): `message` es string[] → se devuelve el array.
+ * El cómo mostrarlo (texto vs. lista) lo decide quien lo consuma.
+ */
+const extractDetail = (body: unknown): string | Array<string> => {
+  if (typeof body === 'object' && body !== null && 'message' in body) {
+    const { message } = body as { message: unknown }
+    if (typeof message === 'string') return message
+    if (Array.isArray(message) && message.every((m) => typeof m === 'string')) {
+      return message
+    }
+  }
+  return FALLBACK_MESSAGE
+}
+
 let refreshPromise: Promise<boolean> | null = null
 
 const refreshSession = async (): Promise<boolean> => {
@@ -35,11 +55,20 @@ export const setOnSessionExpired = (handler: () => void) => {
 }
 
 export class ApiError extends Error {
+  /**
+   * Detalle crudo de Nest: string (throw) o string[] (validación).
+   * `Error.message` (siempre string) queda para logs; para la UI usa `detail`.
+   */
+  readonly detail: string | Array<string>
+
   constructor(
     public readonly status: number,
     public readonly body: unknown,
   ) {
-    super(`Api error ${status}`)
+    const detail = extractDetail(body)
+    super(Array.isArray(detail) ? detail.join(', ') : detail)
+    this.name = 'ApiError'
+    this.detail = detail
   }
 }
 
@@ -84,8 +113,11 @@ export const api = async <T = unknown>(
 
   let response = await doFetch()
 
-  const canRefresh =
-    response.status === 401 && !NO_REFRESH_PATHS.some((p) => path.startsWith(p))
+  // Endpoints de auth (login/refresh/2fa/register): un 401 significa
+  // "credenciales inválidas", no "sesión expirada". No se refresca ni se
+  // dispara onSessionExpired; el error se propaga como ApiError.
+  const isAuthPath = NO_REFRESH_PATHS.some((p) => path.startsWith(p))
+  const canRefresh = response.status === 401 && !isAuthPath
 
   if (canRefresh) {
     const refreshed = await refreshSession()
@@ -100,7 +132,7 @@ export const api = async <T = unknown>(
 
   if (!response.ok) {
     const errorBody: unknown = await response.json().catch(() => null)
-    if (response.status === 401) onSessionExpired()
+    if (response.status === 401 && !isAuthPath) onSessionExpired()
 
     throw new ApiError(response.status, errorBody)
   }

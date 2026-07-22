@@ -8,8 +8,6 @@ export const Route = createFileRoute('/auth')({
 })
 
 function RouteComponent() {
-  const { redirect } = Route.useSearch()
-
   return (
     <main className="h-screen w-screen">
       <section className="flex flex-row size-full">

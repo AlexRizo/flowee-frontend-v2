@@ -3,7 +3,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { queryClient } from '#/lib/query-client'
 import { routeTree } from './routeTree.gen'
-import { setOnSessionExpired } from './lib/api/api-client'
+import { setOnSessionExpired } from './lib/api-client'
 
 const router = createRouter({
   routeTree,
