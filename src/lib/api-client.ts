@@ -21,7 +21,7 @@ const FALLBACK_MESSAGE = 'Ocurrió un error inesperado'
  */
 const extractDetail = (body: unknown): string | Array<string> => {
   if (typeof body === 'object' && body !== null && 'message' in body) {
-    const { message } = body as { message: unknown }
+    const { message } = body
     if (typeof message === 'string') return message
     if (Array.isArray(message) && message.every((m) => typeof m === 'string')) {
       return message
