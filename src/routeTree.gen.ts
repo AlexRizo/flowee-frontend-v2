@@ -16,7 +16,7 @@ import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 import { Route as AuthSigninRouteImport } from './routes/auth/signin'
 import { Route as WWorkspaceCodeRouteRouteImport } from './routes/w/$workspaceCode/route'
 import { Route as WWorkspaceCodeIndexRouteImport } from './routes/w/$workspaceCode/index'
-import { Route as WWorkspaceCodeSpaceCodeIndexRouteImport } from './routes/w/$workspaceCode/$spaceCode/index'
+import { Route as WWorkspaceCodeSSpaceCodeIndexRouteImport } from './routes/w/$workspaceCode/s/$spaceCode/index'
 
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
@@ -53,10 +53,10 @@ const WWorkspaceCodeIndexRoute = WWorkspaceCodeIndexRouteImport.update({
   path: '/',
   getParentRoute: () => WWorkspaceCodeRouteRoute,
 } as any)
-const WWorkspaceCodeSpaceCodeIndexRoute =
-  WWorkspaceCodeSpaceCodeIndexRouteImport.update({
-    id: '/$spaceCode/',
-    path: '/$spaceCode/',
+const WWorkspaceCodeSSpaceCodeIndexRoute =
+  WWorkspaceCodeSSpaceCodeIndexRouteImport.update({
+    id: '/s/$spaceCode/',
+    path: '/s/$spaceCode/',
     getParentRoute: () => WWorkspaceCodeRouteRoute,
   } as any)
 
@@ -68,7 +68,7 @@ export interface FileRoutesByFullPath {
   '/auth/signup': typeof AuthSignupRoute
   '/auth/': typeof AuthIndexRoute
   '/w/$workspaceCode/': typeof WWorkspaceCodeIndexRoute
-  '/w/$workspaceCode/$spaceCode/': typeof WWorkspaceCodeSpaceCodeIndexRoute
+  '/w/$workspaceCode/s/$spaceCode/': typeof WWorkspaceCodeSSpaceCodeIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -76,7 +76,7 @@ export interface FileRoutesByTo {
   '/auth/signup': typeof AuthSignupRoute
   '/auth': typeof AuthIndexRoute
   '/w/$workspaceCode': typeof WWorkspaceCodeIndexRoute
-  '/w/$workspaceCode/$spaceCode': typeof WWorkspaceCodeSpaceCodeIndexRoute
+  '/w/$workspaceCode/s/$spaceCode': typeof WWorkspaceCodeSSpaceCodeIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -87,7 +87,7 @@ export interface FileRoutesById {
   '/auth/signup': typeof AuthSignupRoute
   '/auth/': typeof AuthIndexRoute
   '/w/$workspaceCode/': typeof WWorkspaceCodeIndexRoute
-  '/w/$workspaceCode/$spaceCode/': typeof WWorkspaceCodeSpaceCodeIndexRoute
+  '/w/$workspaceCode/s/$spaceCode/': typeof WWorkspaceCodeSSpaceCodeIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -99,7 +99,7 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/auth/'
     | '/w/$workspaceCode/'
-    | '/w/$workspaceCode/$spaceCode/'
+    | '/w/$workspaceCode/s/$spaceCode/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -107,7 +107,7 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/auth'
     | '/w/$workspaceCode'
-    | '/w/$workspaceCode/$spaceCode'
+    | '/w/$workspaceCode/s/$spaceCode'
   id:
     | '__root__'
     | '/'
@@ -117,7 +117,7 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/auth/'
     | '/w/$workspaceCode/'
-    | '/w/$workspaceCode/$spaceCode/'
+    | '/w/$workspaceCode/s/$spaceCode/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -177,11 +177,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WWorkspaceCodeIndexRouteImport
       parentRoute: typeof WWorkspaceCodeRouteRoute
     }
-    '/w/$workspaceCode/$spaceCode/': {
-      id: '/w/$workspaceCode/$spaceCode/'
-      path: '/$spaceCode'
-      fullPath: '/w/$workspaceCode/$spaceCode/'
-      preLoaderRoute: typeof WWorkspaceCodeSpaceCodeIndexRouteImport
+    '/w/$workspaceCode/s/$spaceCode/': {
+      id: '/w/$workspaceCode/s/$spaceCode/'
+      path: '/s/$spaceCode'
+      fullPath: '/w/$workspaceCode/s/$spaceCode/'
+      preLoaderRoute: typeof WWorkspaceCodeSSpaceCodeIndexRouteImport
       parentRoute: typeof WWorkspaceCodeRouteRoute
     }
   }
@@ -205,12 +205,12 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 
 interface WWorkspaceCodeRouteRouteChildren {
   WWorkspaceCodeIndexRoute: typeof WWorkspaceCodeIndexRoute
-  WWorkspaceCodeSpaceCodeIndexRoute: typeof WWorkspaceCodeSpaceCodeIndexRoute
+  WWorkspaceCodeSSpaceCodeIndexRoute: typeof WWorkspaceCodeSSpaceCodeIndexRoute
 }
 
 const WWorkspaceCodeRouteRouteChildren: WWorkspaceCodeRouteRouteChildren = {
   WWorkspaceCodeIndexRoute: WWorkspaceCodeIndexRoute,
-  WWorkspaceCodeSpaceCodeIndexRoute: WWorkspaceCodeSpaceCodeIndexRoute,
+  WWorkspaceCodeSSpaceCodeIndexRoute: WWorkspaceCodeSSpaceCodeIndexRoute,
 }
 
 const WWorkspaceCodeRouteRouteWithChildren =

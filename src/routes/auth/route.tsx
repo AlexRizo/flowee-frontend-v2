@@ -1,9 +1,19 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { meQueryOptions } from '#/features/auth/queries/auth.queries'
+import { queryClient } from '#/lib/query-client'
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/auth')({
-  validateSearch: (search): { redirect?: string } => ({
-    redirect: typeof search.redirect === 'string' ? search.redirect : undefined,
-  }),
+  beforeLoad: async () => {
+    const user = await queryClient
+      .ensureQueryData(meQueryOptions())
+      .catch(() => null)
+
+    if (user) {
+      throw redirect({ to: '/' })
+    }
+
+    return { user: null }
+  },
   component: RouteComponent,
 })
 
