@@ -14,7 +14,7 @@ export function ApiErrorAlert({ error, title }: ApiErrorAlertProps) {
   const { detail } = error
 
   return (
-    <Alert variant="destructive">
+    <Alert variant="destructive" className='border-red-500'>
       <AlertCircleIcon />
       {title && <AlertTitle>{title}</AlertTitle>}
       <AlertDescription>

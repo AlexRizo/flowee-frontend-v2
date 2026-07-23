@@ -13,6 +13,7 @@ import { ApiErrorAlert } from '#/components/api-error-alert'
 import { signinSchema } from '../schemas/signin.schema'
 import type { SigninSchemaType } from '../schemas/signin.schema'
 import { useSignIn } from '../queries/auth.queries'
+import { cn } from '#/lib/utils'
 
 export const SigninForm = () => {
   const signIn = useSignIn()
@@ -74,15 +75,22 @@ export const SigninForm = () => {
         />
       </FieldGroup>
 
-      {signIn.isError && (
-        <div className="mt-4">
-          <ApiErrorAlert error={signIn.error} title="No pudimos iniciar sesión" />
-        </div>
-      )}
-
       <Button type="submit" className="mt-6 w-full" disabled={signIn.isPending}>
         {signIn.isPending ? 'Iniciando sesión…' : 'Iniciar sesión'}
       </Button>
+
+      {signIn.isError && (
+        <p
+          className={cn(
+            'animate-shake text-center text-sm mt-6 text-red-500 transition-opacity',
+            {
+              'opacity-60': signIn.isPending,
+            },
+          )}
+        >
+          {signIn.error.message}.
+        </p>
+      )}
 
       <div className="mt-4 text-muted-foreground">
         <p className="text-center text-sm">
