@@ -13,13 +13,7 @@ const router = createRouter({
 
 setOnSessionExpired(() => {
   queryClient.clear()
-
-  void router.navigate({
-    to: '/auth/signin',
-    search: {
-      redirect: router.state.location.pathname,
-    },
-  })
+  void router.invalidate()
 })
 
 declare module '@tanstack/react-router' {

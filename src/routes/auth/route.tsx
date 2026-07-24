@@ -1,18 +1,19 @@
-import { meQueryOptions } from '#/features/auth/queries/auth.queries'
-import { queryClient } from '#/lib/query-client'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { toast } from 'sonner'
+import { z } from 'zod'
 
 export const Route = createFileRoute('/auth')({
-  beforeLoad: async () => {
-    const user = await queryClient
-      .ensureQueryData(meQueryOptions())
-      .catch(() => null)
-
-    if (user) {
-      throw redirect({ to: '/' })
+  validateSearch: z.object({
+    redirect: z.string().optional(),
+  }),
+  beforeLoad: async ({ context, search }) => {
+    if (context.user) {
+      throw redirect({
+        to: search.redirect || '/',
+      })
     }
 
-    return { user: null }
+    toast.error('Ocurrió un error al iniciar sesión.')
   },
   component: RouteComponent,
 })

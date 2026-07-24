@@ -87,13 +87,14 @@ const isNativeBody = (body: unknown): body is BodyInit => {
 interface ApiOptions extends Omit<RequestInit, 'body'> {
   body?: unknown
   responseType?: 'json' | 'blob'
+  skipOnSessionExpired?: boolean
 }
 
 export const api = async <T = unknown>(
   path: string,
   options: ApiOptions = {},
 ): Promise<T> => {
-  const { body, headers, responseType = 'json', ...rest } = options
+  const { body, headers, responseType = 'json', skipOnSessionExpired = false, ...rest } = options
 
   const nativeBody = body !== undefined && isNativeBody(body)
   const jsonBody = body !== undefined && !nativeBody
@@ -122,7 +123,7 @@ export const api = async <T = unknown>(
   if (canRefresh) {
     const refreshed = await refreshSession()
 
-    if (!refreshed) {
+    if (!refreshed && !skipOnSessionExpired) {
       onSessionExpired()
       throw new ApiError(401, { message: 'Sesión expirada' })
     }
@@ -132,7 +133,7 @@ export const api = async <T = unknown>(
 
   if (!response.ok) {
     const errorBody: unknown = await response.json().catch(() => null)
-    if (response.status === 401 && !isAuthPath) onSessionExpired()
+    if (response.status === 401 && !isAuthPath && !skipOnSessionExpired) onSessionExpired()
 
     throw new ApiError(response.status, errorBody)
   }

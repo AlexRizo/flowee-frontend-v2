@@ -7,5 +7,5 @@ export const authApi = {
   signIn: (body: SigninSchemaType) =>
     api<LoginResponse>('/auth/login', { method: 'POST', body }),
 
-  me: () => api<PublicUser>('/auth/me'),
+  me: () => api<PublicUser>('/auth/me', { skipOnSessionExpired: true }),
 }

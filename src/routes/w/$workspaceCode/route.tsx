@@ -4,21 +4,16 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '#/components/ui/sidebar'
-import { meQueryOptions } from '#/features/auth/queries/auth.queries'
-import { queryClient } from '#/lib/query-client'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/w/$workspaceCode')({
-  beforeLoad: async () => {
-    const user = await queryClient
-      .ensureQueryData(meQueryOptions())
-      .catch(() => null)
-
-    if (!user) {
-      throw redirect({ to: '/auth' })
+  beforeLoad: async ({ context, location }) => {
+    if (!context.user) {
+      throw redirect({
+        to: '/auth/signin',
+        search: { redirect: location.href },
+      })
     }
-
-    return { user }
   },
   component: RouteComponent,
 })

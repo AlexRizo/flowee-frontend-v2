@@ -1,5 +1,5 @@
 import { queryOptions, useMutation, useQuery } from '@tanstack/react-query'
-import { useNavigate } from '@tanstack/react-router'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { queryClient } from '#/lib/query-client'
 import { authApi } from '../api/auth.api'
@@ -21,6 +21,9 @@ export const useMe = () => useQuery(meQueryOptions())
 
 export const useSignIn = () => {
   const navigate = useNavigate()
+  const search = useSearch({
+    from: '/auth',
+  })
 
   return useMutation({
     mutationFn: authApi.signIn,
@@ -33,7 +36,7 @@ export const useSignIn = () => {
 
       // Sesión establecida: guardamos el user en cache y entramos.
       queryClient.setQueryData<PublicUser>(authKeys.me(), res.user)
-      await navigate({ to: '/' })
+      await navigate({ to: search.redirect || '/' })
     },
   })
 }
