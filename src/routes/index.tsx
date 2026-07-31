@@ -65,7 +65,7 @@ function Home() {
           <small className="max-w-96">
             En caso de no contar con workspaces, ingresa de nuevo o espera a que
             el administrador te asigne uno. Contacta al administrador si crees
-            que es un error.
+            que es un error. aaaaaaa
           </small>
         </article>
       </div>
