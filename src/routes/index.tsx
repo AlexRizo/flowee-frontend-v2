@@ -1,15 +1,45 @@
+import { authApi } from '#/features/auth/api/auth.api'
+import { authKeys } from '#/features/auth/queries/auth.queries'
 import { SelectWorkspace } from '#/features/workspace/components/select-workspace'
 import { meWorkspacesQueryOptions } from '#/features/workspace/queries/workspace.queries'
 import { queryClient } from '#/lib/query-client'
-import { createFileRoute, useLoaderData } from '@tanstack/react-router'
+import {
+  createFileRoute,
+  redirect,
+  useLoaderData,
+} from '@tanstack/react-router'
 import { AlertCircle } from 'lucide-react'
 
 export const Route = createFileRoute('/')({
   component: Home,
+  beforeLoad({ context }) {
+    const user = context.user
+
+    if (!user) throw redirect({ to: '/auth/signin' })
+
+    if (user.favoriteWorkspace?.code) {
+      throw redirect({
+        to: `/w/$workspaceCode`,
+        params: { workspaceCode: user.favoriteWorkspace.code },
+      })
+    }
+  },
   loader: async () => {
     const workspaces = await queryClient
       .ensureQueryData(meWorkspacesQueryOptions())
       .catch(() => [])
+
+    if (workspaces.length === 1) {
+      const uniqueWorkspaceCode = workspaces[0].code
+
+      await authApi.setFavoriteWorkspace(uniqueWorkspaceCode)
+      queryClient.invalidateQueries({ queryKey: authKeys.me() })
+
+      throw redirect({
+        to: `/w/$workspaceCode`,
+        params: { workspaceCode: uniqueWorkspaceCode },
+      })
+    }
 
     return { workspaces }
   },

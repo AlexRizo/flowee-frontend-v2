@@ -40,3 +40,13 @@ export const useSignIn = () => {
     },
   })
 }
+
+export const useFavoriteWorkspace = () => {
+  return useMutation({
+    mutationFn: (workspaceCode: string) =>
+      authApi.setFavoriteWorkspace(workspaceCode),
+    onError: (error) => {
+      toast.error(error.name, { description: error.message })
+    },
+  })
+}

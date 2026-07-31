@@ -13,12 +13,14 @@ import type { Workspaces } from '../types'
 import { Button } from '#/components/ui/button'
 import { LogIn } from 'lucide-react'
 import { useNavigate } from '@tanstack/react-router'
+import { useFavoriteWorkspace } from '#/features/auth/queries/auth.queries'
 
 interface Props {
   workspaces: Workspaces
 }
 
 export const SelectWorkspace: FC<Props> = ({ workspaces = [] }) => {
+  const favoriteWorkspaceMutation = useFavoriteWorkspace()
   const navigate = useNavigate()
   const [selectedWorkspace, setSelectedWorkspace] = useState<string>()
 
@@ -29,9 +31,13 @@ export const SelectWorkspace: FC<Props> = ({ workspaces = [] }) => {
   const onSubmit = () => {
     if (selectedWorkspace === 'null' || !selectedWorkspace) return
 
-    navigate({
-      to: '/w/$workspaceCode',
-      params: { workspaceCode: selectedWorkspace },
+    favoriteWorkspaceMutation.mutate(selectedWorkspace, {
+      onSuccess: () => {
+        navigate({
+          to: '/w/$workspaceCode',
+          params: { workspaceCode: selectedWorkspace },
+        })
+      },
     })
   }
 
@@ -55,7 +61,10 @@ export const SelectWorkspace: FC<Props> = ({ workspaces = [] }) => {
           </SelectGroup>
         </SelectContent>
       </Select>
-      <Button onClick={onSubmit} disabled={!selectedWorkspace || selectedWorkspace === 'null'}>
+      <Button
+        onClick={onSubmit}
+        disabled={!selectedWorkspace || selectedWorkspace === 'null'}
+      >
         Ingresar <LogIn />
       </Button>
     </div>

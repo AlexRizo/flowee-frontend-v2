@@ -1,6 +1,8 @@
 // Contratos que expone el backend de auth.
 // Idealmente se derivan/comparten desde Nest; por ahora se tipan a mano.
 
+import type { Workspace } from "../workspace/types"
+
 export type UserRole = 'CLIENT' | 'ADMIN' | 'SUPERADMIN'
 export type UserStatus = 'ACTIVE' | 'INACTIVE' | 'BANNED'
 export type AuthProvider = 'LOCAL' | 'GOOGLE'
@@ -21,6 +23,7 @@ export interface PublicUser {
   createdAt: string
   updatedAt: string
   lastLoginAt: string | null
+  favoriteWorkspace?: Omit<Workspace, 'color'>
 }
 
 /** Respuesta de `POST /auth/login` (unión discriminada por `twoFactorRequired`). */

@@ -8,4 +8,10 @@ export const authApi = {
     api<LoginResponse>('/auth/login', { method: 'POST', body }),
 
   me: () => api<PublicUser>('/auth/me', { skipOnSessionExpired: true }),
+
+  setFavoriteWorkspace: (workspaceCode: string) =>
+    api<{ ok: true }>('/auth/me/favorite-workspace', {
+      method: 'PATCH',
+      body: { workspaceCode },
+    }),
 }
