@@ -11,9 +11,9 @@ export type AuthProvider = 'LOCAL' | 'GOOGLE'
 export interface PublicUser {
   id: string
   email: string
-  name: string | null
+  name: string
   username: string
-  avatar: string | null
+  avatar?: string
   twoFactorEnabled: boolean
   emailVerified: boolean
   status: UserStatus
