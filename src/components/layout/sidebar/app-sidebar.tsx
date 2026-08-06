@@ -44,6 +44,7 @@ export const AppSidebar = ({ ...props }: ComponentProps<typeof Sidebar>) => {
         {SIDEBAR_MENU.sections.map((section) => (
           <NavMain key={section.title} section={section} />
         ))}
+        
       </SidebarContent>
       <SidebarFooter>
         {/* TODO: Profile menu */}
