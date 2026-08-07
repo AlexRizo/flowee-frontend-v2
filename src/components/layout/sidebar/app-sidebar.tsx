@@ -11,6 +11,7 @@ import type { SidebarMenu } from './sidebar-menu'
 import { NavMain } from './nav-main'
 import { NavUser } from './nav-user'
 import { useMe } from '#/features/auth/queries/auth.queries'
+import { useLoaderData } from '@tanstack/react-router'
 
 const SIDEBAR_MENU: SidebarMenu = {
   sections: [
@@ -36,6 +37,7 @@ const SIDEBAR_MENU: SidebarMenu = {
 
 export const AppSidebar = ({ ...props }: ComponentProps<typeof Sidebar>) => {
   const { data: user } = useMe()
+  const { spaces } = useLoaderData({ from: '/w/$workspaceCode' })
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -44,7 +46,7 @@ export const AppSidebar = ({ ...props }: ComponentProps<typeof Sidebar>) => {
         {SIDEBAR_MENU.sections.map((section) => (
           <NavMain key={section.title} section={section} />
         ))}
-        
+        {spaces.map((space) => <span>{space.name}</span>)}
       </SidebarContent>
       <SidebarFooter>
         {/* TODO: Profile menu */}

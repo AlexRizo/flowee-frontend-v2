@@ -4,6 +4,8 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '#/components/ui/sidebar'
+import { mySpacesQueryOptions } from '#/features/space/queries/space.queries'
+import { queryClient } from '#/lib/query-client'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/w/$workspaceCode')({
@@ -14,6 +16,13 @@ export const Route = createFileRoute('/w/$workspaceCode')({
         search: { redirect: location.href },
       })
     }
+  },
+  loader: async ({ params }) => {
+    const spaces = await queryClient
+      .ensureQueryData(mySpacesQueryOptions(params.workspaceCode))
+      .catch(() => [])
+
+    return { spaces }
   },
   component: RouteComponent,
 })

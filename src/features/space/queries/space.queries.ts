@@ -1,14 +1,15 @@
 import { queryOptions, useQuery } from "@tanstack/react-query"
 import { spaceApi } from "../api/space.api"
+import { workspaceApi } from "#/features/workspace/api/workspace.api"
 
 export const spaceKeys = {
-  mySpaces: () => ['spaces', 'my'] as const
+  mySpaces: (workspaceCode: string) => ['space', 'my', workspaceCode] as const
 }
 
-export const meSpacesQueryOptions = () => queryOptions({
-  queryKey: spaceKeys.mySpaces(),
-  queryFn: () => spaceApi.getMySpaces(),
+export const mySpacesQueryOptions = (workspaceCode: string) => queryOptions({
+  queryKey: spaceKeys.mySpaces(workspaceCode),
+  queryFn: () => workspaceApi.getWorkspaceSpaces(workspaceCode),
   staleTime: 10 * 60 * 1000
 })
 
-export const useMeSpaces = () => useQuery(meSpacesQueryOptions())
+export const useMySpaces = (workspaceCode: string) => useQuery(mySpacesQueryOptions(workspaceCode))
