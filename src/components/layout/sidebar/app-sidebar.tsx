@@ -5,7 +5,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from '#/components/ui/sidebar'
-import { Home } from 'lucide-react'
+import { CalendarDays, ClipboardList, Cog, GitPullRequestCreateArrow, Home, ShieldUser, Users } from 'lucide-react'
 import type { ComponentProps } from 'react'
 import type { SidebarMenu } from './sidebar-menu'
 import { NavMain } from './nav-main'
@@ -20,17 +20,17 @@ const SIDEBAR_MENU: SidebarMenu = {
       title: 'Centro de control',
       options: [
         { title: 'Inicio', to: '/', icon: Home },
-        { title: 'Centro de asignaciones', to: '/assignments', icon: Home },
-        { title: 'Mis tareas', to: '/my-tasks', icon: Home },
-        { title: 'Eventos', to: '/events', icon: Home },
+        { title: 'Centro de asignaciones', to: '/assignments', icon: GitPullRequestCreateArrow },
+        { title: 'Mis tareas', to: '/my-tasks', icon: ClipboardList },
+        { title: 'Eventos', to: '/events', icon: CalendarDays },
       ],
     },
     {
       title: 'Configuración',
       options: [
-        { title: 'Usuarios', to: '/users', icon: Home },
-        { title: 'Configuración', to: '/config', icon: Home },
-        { title: 'Administrador', to: '/admin', icon: Home },
+        { title: 'Usuarios', to: '/users', icon: Users },
+        { title: 'Configuración', to: '/config', icon: Cog },
+        { title: 'Administrador', to: '/admin', icon: ShieldUser },
       ],
     },
   ],
