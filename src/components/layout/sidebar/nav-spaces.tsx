@@ -20,14 +20,18 @@ export const NavSpaces = ({ spaces }: Props) => {
       <SidebarMenu>
         {spaces.map((space) => (
           <Link
+            key={space.code}
             activeProps={{ className: 'bg-violet-200' }}
-            className='hover:bg-violet-100 rounded-md'
+            className="hover:bg-violet-100 rounded-md"
             from="/w/$workspaceCode"
             to="/w/$workspaceCode/s/$spaceCode"
             params={{ spaceCode: space.code }}
           >
-            <SidebarMenuItem key={space.id}>
-              <SidebarMenuButton tooltip={space.name} className='hover:bg-transparent'>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                tooltip={space.name}
+                className="hover:bg-transparent"
+              >
                 <SpaceIcon color={space.color} name={space.name} />
                 <span>{space.name}</span>
               </SidebarMenuButton>

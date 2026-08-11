@@ -21,6 +21,7 @@ export const NavMain: FC<Props> = ({ section, workspace }) => {
       <SidebarMenu>
         {section.options.map((option) => (
           <Link
+            key={option.to}
             activeProps={{ className: 'bg-violet-200' }}
             activeOptions={{ exact: option.to === '/' }}
             className="hover:bg-violet-100 rounded-md"
