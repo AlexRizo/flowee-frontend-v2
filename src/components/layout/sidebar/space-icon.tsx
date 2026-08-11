@@ -1,3 +1,5 @@
+import { getContrastText } from '#/lib/get-contrast-text'
+
 interface Props {
   name: string
   color: string
@@ -5,8 +7,17 @@ interface Props {
 
 export const SpaceIcon = ({ color, name }: Props) => {
   return (
-    <div className="h-3 w-3 rounded-sm" style={{ backgroundColor: color }}>
-      <small>{name.slice(0, 2).toUpperCase()}</small>
+    <div
+      role="complementary"
+      className="size-5.5 rounded-sm flex items-center justify-center min-w-4.5 min-h-4.5"
+      style={{ backgroundColor: color }}
+    >
+      <span
+        className="font-bold text-xs"
+        style={{ color: getContrastText(color) }}
+      >
+        {name[0]}
+      </span>
     </div>
   )
 }
