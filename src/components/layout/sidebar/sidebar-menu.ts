@@ -2,13 +2,13 @@ import type { LucideIcon } from 'lucide-react'
 
 interface SectionOption {
   title: string
-  path: string
+  to: string
   isCollapsable?: boolean
   isActive?: boolean
   icon?: LucideIcon
   items?: {
     title: string
-    path: string
+    to: string
   }[]
 }
 

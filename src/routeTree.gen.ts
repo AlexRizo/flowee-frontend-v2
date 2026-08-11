@@ -16,6 +16,9 @@ import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 import { Route as AuthSigninRouteImport } from './routes/auth/signin'
 import { Route as WWorkspaceCodeRouteRouteImport } from './routes/w/$workspaceCode/route'
 import { Route as WWorkspaceCodeIndexRouteImport } from './routes/w/$workspaceCode/index'
+import { Route as WWorkspaceCodeMyTasksRouteImport } from './routes/w/$workspaceCode/my-tasks'
+import { Route as WWorkspaceCodeEventsRouteImport } from './routes/w/$workspaceCode/events'
+import { Route as WWorkspaceCodeAssignmentsRouteImport } from './routes/w/$workspaceCode/assignments'
 import { Route as WWorkspaceCodeSSpaceCodeIndexRouteImport } from './routes/w/$workspaceCode/s/$spaceCode/index'
 
 const AuthRouteRoute = AuthRouteRouteImport.update({
@@ -53,6 +56,22 @@ const WWorkspaceCodeIndexRoute = WWorkspaceCodeIndexRouteImport.update({
   path: '/',
   getParentRoute: () => WWorkspaceCodeRouteRoute,
 } as any)
+const WWorkspaceCodeMyTasksRoute = WWorkspaceCodeMyTasksRouteImport.update({
+  id: '/my-tasks',
+  path: '/my-tasks',
+  getParentRoute: () => WWorkspaceCodeRouteRoute,
+} as any)
+const WWorkspaceCodeEventsRoute = WWorkspaceCodeEventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => WWorkspaceCodeRouteRoute,
+} as any)
+const WWorkspaceCodeAssignmentsRoute =
+  WWorkspaceCodeAssignmentsRouteImport.update({
+    id: '/assignments',
+    path: '/assignments',
+    getParentRoute: () => WWorkspaceCodeRouteRoute,
+  } as any)
 const WWorkspaceCodeSSpaceCodeIndexRoute =
   WWorkspaceCodeSSpaceCodeIndexRouteImport.update({
     id: '/s/$spaceCode/',
@@ -67,6 +86,9 @@ export interface FileRoutesByFullPath {
   '/auth/signin': typeof AuthSigninRoute
   '/auth/signup': typeof AuthSignupRoute
   '/auth/': typeof AuthIndexRoute
+  '/w/$workspaceCode/assignments': typeof WWorkspaceCodeAssignmentsRoute
+  '/w/$workspaceCode/events': typeof WWorkspaceCodeEventsRoute
+  '/w/$workspaceCode/my-tasks': typeof WWorkspaceCodeMyTasksRoute
   '/w/$workspaceCode/': typeof WWorkspaceCodeIndexRoute
   '/w/$workspaceCode/s/$spaceCode/': typeof WWorkspaceCodeSSpaceCodeIndexRoute
 }
@@ -75,6 +97,9 @@ export interface FileRoutesByTo {
   '/auth/signin': typeof AuthSigninRoute
   '/auth/signup': typeof AuthSignupRoute
   '/auth': typeof AuthIndexRoute
+  '/w/$workspaceCode/assignments': typeof WWorkspaceCodeAssignmentsRoute
+  '/w/$workspaceCode/events': typeof WWorkspaceCodeEventsRoute
+  '/w/$workspaceCode/my-tasks': typeof WWorkspaceCodeMyTasksRoute
   '/w/$workspaceCode': typeof WWorkspaceCodeIndexRoute
   '/w/$workspaceCode/s/$spaceCode': typeof WWorkspaceCodeSSpaceCodeIndexRoute
 }
@@ -86,6 +111,9 @@ export interface FileRoutesById {
   '/auth/signin': typeof AuthSigninRoute
   '/auth/signup': typeof AuthSignupRoute
   '/auth/': typeof AuthIndexRoute
+  '/w/$workspaceCode/assignments': typeof WWorkspaceCodeAssignmentsRoute
+  '/w/$workspaceCode/events': typeof WWorkspaceCodeEventsRoute
+  '/w/$workspaceCode/my-tasks': typeof WWorkspaceCodeMyTasksRoute
   '/w/$workspaceCode/': typeof WWorkspaceCodeIndexRoute
   '/w/$workspaceCode/s/$spaceCode/': typeof WWorkspaceCodeSSpaceCodeIndexRoute
 }
@@ -98,6 +126,9 @@ export interface FileRouteTypes {
     | '/auth/signin'
     | '/auth/signup'
     | '/auth/'
+    | '/w/$workspaceCode/assignments'
+    | '/w/$workspaceCode/events'
+    | '/w/$workspaceCode/my-tasks'
     | '/w/$workspaceCode/'
     | '/w/$workspaceCode/s/$spaceCode/'
   fileRoutesByTo: FileRoutesByTo
@@ -106,6 +137,9 @@ export interface FileRouteTypes {
     | '/auth/signin'
     | '/auth/signup'
     | '/auth'
+    | '/w/$workspaceCode/assignments'
+    | '/w/$workspaceCode/events'
+    | '/w/$workspaceCode/my-tasks'
     | '/w/$workspaceCode'
     | '/w/$workspaceCode/s/$spaceCode'
   id:
@@ -116,6 +150,9 @@ export interface FileRouteTypes {
     | '/auth/signin'
     | '/auth/signup'
     | '/auth/'
+    | '/w/$workspaceCode/assignments'
+    | '/w/$workspaceCode/events'
+    | '/w/$workspaceCode/my-tasks'
     | '/w/$workspaceCode/'
     | '/w/$workspaceCode/s/$spaceCode/'
   fileRoutesById: FileRoutesById
@@ -177,6 +214,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WWorkspaceCodeIndexRouteImport
       parentRoute: typeof WWorkspaceCodeRouteRoute
     }
+    '/w/$workspaceCode/my-tasks': {
+      id: '/w/$workspaceCode/my-tasks'
+      path: '/my-tasks'
+      fullPath: '/w/$workspaceCode/my-tasks'
+      preLoaderRoute: typeof WWorkspaceCodeMyTasksRouteImport
+      parentRoute: typeof WWorkspaceCodeRouteRoute
+    }
+    '/w/$workspaceCode/events': {
+      id: '/w/$workspaceCode/events'
+      path: '/events'
+      fullPath: '/w/$workspaceCode/events'
+      preLoaderRoute: typeof WWorkspaceCodeEventsRouteImport
+      parentRoute: typeof WWorkspaceCodeRouteRoute
+    }
+    '/w/$workspaceCode/assignments': {
+      id: '/w/$workspaceCode/assignments'
+      path: '/assignments'
+      fullPath: '/w/$workspaceCode/assignments'
+      preLoaderRoute: typeof WWorkspaceCodeAssignmentsRouteImport
+      parentRoute: typeof WWorkspaceCodeRouteRoute
+    }
     '/w/$workspaceCode/s/$spaceCode/': {
       id: '/w/$workspaceCode/s/$spaceCode/'
       path: '/s/$spaceCode'
@@ -204,11 +262,17 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 )
 
 interface WWorkspaceCodeRouteRouteChildren {
+  WWorkspaceCodeAssignmentsRoute: typeof WWorkspaceCodeAssignmentsRoute
+  WWorkspaceCodeEventsRoute: typeof WWorkspaceCodeEventsRoute
+  WWorkspaceCodeMyTasksRoute: typeof WWorkspaceCodeMyTasksRoute
   WWorkspaceCodeIndexRoute: typeof WWorkspaceCodeIndexRoute
   WWorkspaceCodeSSpaceCodeIndexRoute: typeof WWorkspaceCodeSSpaceCodeIndexRoute
 }
 
 const WWorkspaceCodeRouteRouteChildren: WWorkspaceCodeRouteRouteChildren = {
+  WWorkspaceCodeAssignmentsRoute: WWorkspaceCodeAssignmentsRoute,
+  WWorkspaceCodeEventsRoute: WWorkspaceCodeEventsRoute,
+  WWorkspaceCodeMyTasksRoute: WWorkspaceCodeMyTasksRoute,
   WWorkspaceCodeIndexRoute: WWorkspaceCodeIndexRoute,
   WWorkspaceCodeSSpaceCodeIndexRoute: WWorkspaceCodeSSpaceCodeIndexRoute,
 }
