@@ -12,6 +12,7 @@ import { NavMain } from './nav-main'
 import { NavUser } from './nav-user'
 import { useMe } from '#/features/auth/queries/auth.queries'
 import { useLoaderData } from '@tanstack/react-router'
+import { NavSpaces } from './nav-spaces'
 
 const SIDEBAR_MENU: SidebarMenu = {
   sections: [
@@ -46,7 +47,8 @@ export const AppSidebar = ({ ...props }: ComponentProps<typeof Sidebar>) => {
         {SIDEBAR_MENU.sections.map((section) => (
           <NavMain key={section.title} section={section} />
         ))}
-        {spaces.map((space) => <span>{space.name}</span>)}
+
+        <NavSpaces spaces={spaces} />
       </SidebarContent>
       <SidebarFooter>
         {/* TODO: Profile menu */}
