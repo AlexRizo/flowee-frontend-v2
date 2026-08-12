@@ -82,17 +82,11 @@ export const WorkspaceSwitcher = ({ workspaces, activeWorkspace }: Prosp) => {
                 <div
                   className="flex size-6 items-center justify-center rounded-sm border"
                   style={{
+                    color: getContrastText(workspace.color),
                     backgroundColor: workspace.color,
                   }}
                 >
-                  <LayoutDashboard
-                    className="shrink-0 size-3.5 text-[var(--icon-fg)]!"
-                    style={
-                      {
-                        '--icon-fg': getContrastText(workspace.color),
-                      } as CSSProperties
-                    }
-                  />
+                  <LayoutDashboard className="shrink-0 size-3.5" />
                 </div>
                 {workspace.name}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
