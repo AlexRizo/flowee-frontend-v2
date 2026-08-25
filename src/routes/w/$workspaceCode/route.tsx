@@ -32,9 +32,13 @@ function RouteComponent() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <SidebarTrigger />
-        <main>
-          <h1>{Route.id}</h1>
+        <header className="flex flex-row items-center justify-between">
+          <SidebarTrigger />
+          <div>
+            
+          </div>
+        </header>
+        <main className="flex-1 overflow-hidden">
           <Outlet />
         </main>
       </SidebarInset>

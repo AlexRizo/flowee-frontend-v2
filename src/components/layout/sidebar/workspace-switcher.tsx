@@ -17,7 +17,6 @@ import type { Workspace } from '#/features/workspace/types'
 import { getContrastText } from '#/lib/get-contrast-text'
 import { useNavigate } from '@tanstack/react-router'
 import { ChevronsUpDown, LayoutDashboard, Plus } from 'lucide-react'
-import type { CSSProperties } from 'react'
 
 interface Prosp {
   workspaces: Workspace[]
