@@ -40,7 +40,7 @@ function RouteComponent() {
       <AppSidebar />
       <SidebarInset>
         <header className="flex flex-row items-center border-b py-2.5 gap-2">
-          <div className='border-r px-4'>
+          <div className='border-r px-3 mr-3'>
             <SidebarTrigger />
           </div>
           <Breadcrumbs />
