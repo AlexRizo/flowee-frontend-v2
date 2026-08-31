@@ -3,23 +3,32 @@ import { SidebarTrigger } from '#/components/ui/sidebar'
 import { Plus } from 'lucide-react'
 import { Breadcrumbs } from './breadcrumbs'
 import { SelectSpaceToCreateTask } from './select-space-to-create-task'
-import { useState } from 'react'
-import { useLocation } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from '@tanstack/react-router'
 
 export const NavbarApp = () => {
   const [open, setOpen] = useState<boolean>(false)
   const location = useLocation()
+  const navigate = useNavigate()
 
   const handleCreateTask = () => {
     const currentLocation = location.pathname
 
     if (currentLocation.includes('/s')) {
-      console.log(currentLocation)
+      navigate({
+        from: '/w/$workspaceCode/s/$spaceCode/',
+        to: '/w/$workspaceCode/s/$spaceCode/tasks/create',
+      })
       return
     }
 
     setOpen(true)
   }
+
+  useEffect(() => {
+    if (!open) return
+    setOpen(false)
+  }, [location.pathname])
 
   return (
     <header className="flex flex-row items-center justify-between border-b py-2.5 gap-2 pr-3">

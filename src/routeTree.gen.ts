@@ -20,6 +20,8 @@ import { Route as WWorkspaceCodeMyTasksRouteImport } from './routes/w/$workspace
 import { Route as WWorkspaceCodeEventsRouteImport } from './routes/w/$workspaceCode/events'
 import { Route as WWorkspaceCodeAssignmentsRouteImport } from './routes/w/$workspaceCode/assignments'
 import { Route as WWorkspaceCodeSSpaceCodeIndexRouteImport } from './routes/w/$workspaceCode/s/$spaceCode/index'
+import { Route as WWorkspaceCodeSSpaceCodeTasksCreateIndexRouteImport } from './routes/w/$workspaceCode/s/$spaceCode/tasks/create/index'
+import { Route as WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRouteImport } from './routes/w/$workspaceCode/s/$spaceCode/tasks/create/event-task'
 
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
@@ -78,6 +80,18 @@ const WWorkspaceCodeSSpaceCodeIndexRoute =
     path: '/s/$spaceCode/',
     getParentRoute: () => WWorkspaceCodeRouteRoute,
   } as any)
+const WWorkspaceCodeSSpaceCodeTasksCreateIndexRoute =
+  WWorkspaceCodeSSpaceCodeTasksCreateIndexRouteImport.update({
+    id: '/s/$spaceCode/tasks/create/',
+    path: '/s/$spaceCode/tasks/create/',
+    getParentRoute: () => WWorkspaceCodeRouteRoute,
+  } as any)
+const WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRoute =
+  WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRouteImport.update({
+    id: '/s/$spaceCode/tasks/create/event-task',
+    path: '/s/$spaceCode/tasks/create/event-task',
+    getParentRoute: () => WWorkspaceCodeRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -91,6 +105,8 @@ export interface FileRoutesByFullPath {
   '/w/$workspaceCode/my-tasks': typeof WWorkspaceCodeMyTasksRoute
   '/w/$workspaceCode/': typeof WWorkspaceCodeIndexRoute
   '/w/$workspaceCode/s/$spaceCode/': typeof WWorkspaceCodeSSpaceCodeIndexRoute
+  '/w/$workspaceCode/s/$spaceCode/tasks/create/event-task': typeof WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRoute
+  '/w/$workspaceCode/s/$spaceCode/tasks/create/': typeof WWorkspaceCodeSSpaceCodeTasksCreateIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -102,6 +118,8 @@ export interface FileRoutesByTo {
   '/w/$workspaceCode/my-tasks': typeof WWorkspaceCodeMyTasksRoute
   '/w/$workspaceCode': typeof WWorkspaceCodeIndexRoute
   '/w/$workspaceCode/s/$spaceCode': typeof WWorkspaceCodeSSpaceCodeIndexRoute
+  '/w/$workspaceCode/s/$spaceCode/tasks/create/event-task': typeof WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRoute
+  '/w/$workspaceCode/s/$spaceCode/tasks/create': typeof WWorkspaceCodeSSpaceCodeTasksCreateIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -116,6 +134,8 @@ export interface FileRoutesById {
   '/w/$workspaceCode/my-tasks': typeof WWorkspaceCodeMyTasksRoute
   '/w/$workspaceCode/': typeof WWorkspaceCodeIndexRoute
   '/w/$workspaceCode/s/$spaceCode/': typeof WWorkspaceCodeSSpaceCodeIndexRoute
+  '/w/$workspaceCode/s/$spaceCode/tasks/create/event-task': typeof WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRoute
+  '/w/$workspaceCode/s/$spaceCode/tasks/create/': typeof WWorkspaceCodeSSpaceCodeTasksCreateIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,6 +151,8 @@ export interface FileRouteTypes {
     | '/w/$workspaceCode/my-tasks'
     | '/w/$workspaceCode/'
     | '/w/$workspaceCode/s/$spaceCode/'
+    | '/w/$workspaceCode/s/$spaceCode/tasks/create/event-task'
+    | '/w/$workspaceCode/s/$spaceCode/tasks/create/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -142,6 +164,8 @@ export interface FileRouteTypes {
     | '/w/$workspaceCode/my-tasks'
     | '/w/$workspaceCode'
     | '/w/$workspaceCode/s/$spaceCode'
+    | '/w/$workspaceCode/s/$spaceCode/tasks/create/event-task'
+    | '/w/$workspaceCode/s/$spaceCode/tasks/create'
   id:
     | '__root__'
     | '/'
@@ -155,6 +179,8 @@ export interface FileRouteTypes {
     | '/w/$workspaceCode/my-tasks'
     | '/w/$workspaceCode/'
     | '/w/$workspaceCode/s/$spaceCode/'
+    | '/w/$workspaceCode/s/$spaceCode/tasks/create/event-task'
+    | '/w/$workspaceCode/s/$spaceCode/tasks/create/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -242,6 +268,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WWorkspaceCodeSSpaceCodeIndexRouteImport
       parentRoute: typeof WWorkspaceCodeRouteRoute
     }
+    '/w/$workspaceCode/s/$spaceCode/tasks/create/': {
+      id: '/w/$workspaceCode/s/$spaceCode/tasks/create/'
+      path: '/s/$spaceCode/tasks/create'
+      fullPath: '/w/$workspaceCode/s/$spaceCode/tasks/create/'
+      preLoaderRoute: typeof WWorkspaceCodeSSpaceCodeTasksCreateIndexRouteImport
+      parentRoute: typeof WWorkspaceCodeRouteRoute
+    }
+    '/w/$workspaceCode/s/$spaceCode/tasks/create/event-task': {
+      id: '/w/$workspaceCode/s/$spaceCode/tasks/create/event-task'
+      path: '/s/$spaceCode/tasks/create/event-task'
+      fullPath: '/w/$workspaceCode/s/$spaceCode/tasks/create/event-task'
+      preLoaderRoute: typeof WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRouteImport
+      parentRoute: typeof WWorkspaceCodeRouteRoute
+    }
   }
 }
 
@@ -267,6 +307,8 @@ interface WWorkspaceCodeRouteRouteChildren {
   WWorkspaceCodeMyTasksRoute: typeof WWorkspaceCodeMyTasksRoute
   WWorkspaceCodeIndexRoute: typeof WWorkspaceCodeIndexRoute
   WWorkspaceCodeSSpaceCodeIndexRoute: typeof WWorkspaceCodeSSpaceCodeIndexRoute
+  WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRoute: typeof WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRoute
+  WWorkspaceCodeSSpaceCodeTasksCreateIndexRoute: typeof WWorkspaceCodeSSpaceCodeTasksCreateIndexRoute
 }
 
 const WWorkspaceCodeRouteRouteChildren: WWorkspaceCodeRouteRouteChildren = {
@@ -275,6 +317,10 @@ const WWorkspaceCodeRouteRouteChildren: WWorkspaceCodeRouteRouteChildren = {
   WWorkspaceCodeMyTasksRoute: WWorkspaceCodeMyTasksRoute,
   WWorkspaceCodeIndexRoute: WWorkspaceCodeIndexRoute,
   WWorkspaceCodeSSpaceCodeIndexRoute: WWorkspaceCodeSSpaceCodeIndexRoute,
+  WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRoute:
+    WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRoute,
+  WWorkspaceCodeSSpaceCodeTasksCreateIndexRoute:
+    WWorkspaceCodeSSpaceCodeTasksCreateIndexRoute,
 }
 
 const WWorkspaceCodeRouteRouteWithChildren =

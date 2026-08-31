@@ -8,6 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '#/components/ui/dialog'
+import { useLoaderData } from '@tanstack/react-router'
+import { SelectSpaces } from './SelectSpaces'
 
 interface Props {
   open: boolean
@@ -15,17 +17,20 @@ interface Props {
 }
 
 export const SelectSpaceToCreateTask = ({ open, onOpenChange }: Props) => {
+  const { spaces } = useLoaderData({ from: '/w/$workspaceCode' })
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent >
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>Are you absolutely sure?</DialogTitle>
+          <DialogTitle>Espacios disponibles</DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            Selecciona el espacio donde quieres crear la tarea.
           </DialogDescription>
         </DialogHeader>
-        <div>{/* Contenido: */}</div>
+        {/* ? Cuerpo del dialog: */}
+        <SelectSpaces spaces={spaces} />
+
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>
             <Button type="button">Cancelar</Button>
