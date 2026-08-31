@@ -1,9 +1,9 @@
 
 @import "tailwindcss";
 @import "tw-animate-css";
+@import 'tailwind-animations';
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
-@import 'tailwind-animations';
 
 @custom-variant dark (&:is(.dark *));
 
