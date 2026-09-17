@@ -7,10 +7,12 @@ import {
 } from '#/components/ui/avatar'
 import { Card, CardContent } from '#/components/ui/card'
 import { cn } from '#/lib/utils'
-import { avatarColorFor, initialsFor, initialsFrom } from '../lib/avatar-color'
+import { avatarColorFor, initialsFor } from '../lib/avatar-color'
 import { TASK_PRIORITY_CONFIG } from '../lib/task-priority'
 import { TASK_TYPE_CONFIG } from '../lib/task-type'
+import { truncate } from '../lib/truncate'
 import type { Task } from '../types'
+import { BoardBadge } from '#/features/space/components/board-badge'
 
 const dateFormatter = new Intl.DateTimeFormat('es-MX', {
   weekday: 'short',
@@ -19,6 +21,8 @@ const dateFormatter = new Intl.DateTimeFormat('es-MX', {
 })
 
 const MAX_VISIBLE_ASSIGNEES = 3
+const TITLE_MAX_LENGTH = 60
+const DESCRIPTION_MAX_LENGTH = 90
 
 interface TaskCardProps {
   task: Task
@@ -38,19 +42,16 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
     <Card
       size="sm"
       onClick={() => onClick?.(task)}
-      className="cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md hover:ring-primary/40"
+      className="cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md hover:ring-primary/40 p-0"
     >
-      <CardContent>
-        <div className="flex items-center justify-between gap-2">
+      <CardContent className="p-0 gap-0">
+        <div
+          role="heading"
+          className="flex items-center justify-between gap-2 py-2 px-4"
+        >
           <div className="flex items-center gap-1">
             {/* Prefijo/iniciales del Space */}
-            <span
-              className="flex h-5 items-center justify-center rounded-md px-1.5 text-[10px] font-bold tracking-wide text-white"
-              style={{ background: task.space.color }}
-              title={task.space.name}
-            >
-              {initialsFrom(task.space.name)}
-            </span>
+            <BoardBadge task={task} />
 
             {/* Asignado(s) */}
             {visibleAssignees.length > 0 && (
@@ -92,33 +93,35 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
           </div>
 
           {/* Prioridad */}
-          {task.priority !== 'NORMAL' && (
-            <span
-              className={cn(
-                'flex shrink-0 items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-semibold',
-                priorityConfig.className,
-              )}
-            >
-              <PriorityIcon className="size-3" />
-              {priorityConfig.label}
-            </span>
-          )}
+          <span
+            className={cn(
+              'flex shrink-0 items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-semibold',
+              priorityConfig.className,
+            )}
+          >
+            <PriorityIcon className="size-3" />
+            {priorityConfig.label}
+          </span>
         </div>
 
-        <div className="flex flex-col gap-0.5">
-          <span className="text-[13.5px] font-bold leading-tight">
-            {task.title}
+        <div className="flex flex-col gap-0.5 p-4 border-y">
+          <span
+            className="truncate text-[13.5px] font-bold leading-tight"
+            title={task.title}
+          >
+            {truncate(task.title, TITLE_MAX_LENGTH)}
           </span>
           {task.description && (
-            <p className="line-clamp-2 text-[12.5px] leading-snug font-normal text-muted-foreground">
-              {task.description}
+            <p
+              className="line-clamp-2 text-[12.5px] leading-snug font-normal text-muted-foreground"
+              title={task.description}
+            >
+              {truncate(task.description, DESCRIPTION_MAX_LENGTH)}
             </p>
           )}
         </div>
 
-        <div className="h-px bg-border" />
-
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between py-2 px-4">
           <Avatar size="sm" title={task.author.name ?? task.author.username}>
             <AvatarFallback className={avatarColorFor(task.author.id)}>
               {initialsFor(task.author.name, task.author.username)}

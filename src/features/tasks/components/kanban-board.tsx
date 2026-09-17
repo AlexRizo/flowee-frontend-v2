@@ -20,7 +20,7 @@ export function KanbanBoard({ tasks, onTaskClick }: KanbanBoardProps) {
   }, [tasks])
 
   return (
-    <div className="flex items-start gap-5 overflow-x-auto pb-2">
+    <div className="flex items-start gap-5 overflow-x-auto pb-2 px-px">
       {TASK_STATUS_ORDER.map((status) => (
         <KanbanColumn
           key={status}

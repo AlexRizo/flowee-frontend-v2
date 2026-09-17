@@ -1,4 +1,4 @@
-import { Calendar, Megaphone, Palette, Video } from 'lucide-react'
+import { Camera, Megaphone, Palette, Video } from 'lucide-react'
 import type { TaskType } from '../types'
 
 interface TypeConfig {
@@ -22,7 +22,7 @@ export const TASK_TYPE_CONFIG: Record<TaskType, TypeConfig> = {
   },
   EVENT: {
     label: 'Evento',
-    icon: Calendar,
+    icon: Camera,
     className: 'bg-primary text-primary-foreground',
   },
   POST: {
