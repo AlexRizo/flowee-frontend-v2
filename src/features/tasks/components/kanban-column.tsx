@@ -10,15 +10,19 @@ interface KanbanColumnProps {
   onTaskClick?: (task: Task) => void
 }
 
-export function KanbanColumn({ status, tasks, onTaskClick }: KanbanColumnProps) {
+export function KanbanColumn({
+  status,
+  tasks,
+  onTaskClick,
+}: KanbanColumnProps) {
   const config = TASK_STATUS_CONFIG[status]
   const { setNodeRef, isOver } = useDroppable({ id: status })
 
   return (
-    <div className="flex min-w-60 max-w-70 flex-1 basis-60 flex-col gap-3.5">
+    <div className="flex min-w-60 max-w-70 flex-1 basis-60 flex-col gap-3.5 relative">
       <div
         className={cn(
-          'flex items-center justify-between rounded-lg border border-l-4 px-3 py-2.5',
+          'flex items-center justify-between rounded-lg border border-l-4 px-3 py-2.5 sticky top-1 z-10',
           config.headerBg,
           config.headerBorder,
           config.bar,
@@ -45,7 +49,11 @@ export function KanbanColumn({ status, tasks, onTaskClick }: KanbanColumnProps) 
           </div>
         ) : (
           tasks.map((task) => (
-            <DraggableTaskCard key={task.id} task={task} onClick={onTaskClick} />
+            <DraggableTaskCard
+              key={task.id}
+              task={task}
+              onClick={onTaskClick}
+            />
           ))
         )}
       </div>
