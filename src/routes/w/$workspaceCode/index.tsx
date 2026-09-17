@@ -25,7 +25,7 @@ function RouteComponent() {
   )
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex h-full min-h-0 flex-col gap-6">
       <div>
         <h1 className="text-xl font-semibold">Tablero general</h1>
         <p className="text-sm text-muted-foreground">

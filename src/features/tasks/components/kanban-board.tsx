@@ -18,13 +18,20 @@ interface KanbanBoardProps {
 }
 
 export function KanbanBoard({ tasks, onTaskClick }: KanbanBoardProps) {
-  const [localTasks, setLocalTasks] = useState(tasks)
+  // Las tareas EVENT no viven en el kanban, tienen su propio calendario en
+  // /eventos.
+  const boardTasks = useMemo(
+    () => tasks.filter((task) => task.type !== 'EVENT'),
+    [tasks],
+  )
+
+  const [localTasks, setLocalTasks] = useState(boardTasks)
   const [activeTask, setActiveTask] = useState<Task | null>(null)
 
   // Resincroniza si llegan datos nuevos del servidor (refetch, navegación).
   useEffect(() => {
-    setLocalTasks(tasks)
-  }, [tasks])
+    setLocalTasks(boardTasks)
+  }, [boardTasks])
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -68,7 +75,7 @@ export function KanbanBoard({ tasks, onTaskClick }: KanbanBoardProps) {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex items-start gap-5 overflow-x-auto px-2 pb-2 no-scrollbar">
+      <div className="flex flex-1 min-h-0 items-start gap-5 overflow-auto px-2 pb-2 no-scrollbar">
         {TASK_STATUS_ORDER.map((status) => (
           <KanbanColumn
             key={status}

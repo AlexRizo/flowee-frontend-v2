@@ -6,6 +6,8 @@ export const taskKeys = {
     ['tasks', 'workspace', workspaceCode, take] as const,
   myWorkspace: (workspaceCode: string, take: number) =>
     ['tasks', 'workspace', workspaceCode, 'mine', take] as const,
+  events: (workspaceCode: string, take: number) =>
+    ['tasks', 'workspace', workspaceCode, 'events', take] as const,
   space: (workspaceCode: string, spaceCode: string, take: number) =>
     ['tasks', 'space', workspaceCode, spaceCode, take] as const,
 }
@@ -35,6 +37,16 @@ export const myWorkspaceTasksQueryOptions = (
 
 export const useMyWorkspaceTasks = (workspaceCode: string, take = 200) =>
   useQuery(myWorkspaceTasksQueryOptions(workspaceCode, take))
+
+export const eventTasksQueryOptions = (workspaceCode: string, take = 200) =>
+  queryOptions({
+    queryKey: taskKeys.events(workspaceCode, take),
+    queryFn: () => tasksApi.getEventTasks(workspaceCode, take),
+    staleTime: 60 * 1000,
+  })
+
+export const useEventTasks = (workspaceCode: string, take = 200) =>
+  useQuery(eventTasksQueryOptions(workspaceCode, take))
 
 export const spaceTasksQueryOptions = (
   workspaceCode: string,

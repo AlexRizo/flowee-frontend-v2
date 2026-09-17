@@ -22,7 +22,7 @@ export function KanbanColumn({
     <div className="flex min-w-60 max-w-70 flex-1 basis-60 flex-col gap-3.5 relative">
       <div
         className={cn(
-          'flex items-center justify-between rounded-lg border border-l-4 px-3 py-2.5 sticky top-1 z-10',
+          'flex items-center justify-between rounded-lg border border-l-4 px-3 py-2.5 sticky top-0 z-10 backdrop-blur-md',
           config.headerBg,
           config.headerBorder,
           config.bar,

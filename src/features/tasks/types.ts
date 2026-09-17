@@ -23,6 +23,14 @@ export interface TaskSpace {
   color: string
 }
 
+export type EventStatus = 'PENDING' | 'SCHEDULED' | 'ATTENDING' | 'FINISHED'
+
+export interface TaskEventDetails {
+  startDate: string
+  place: string
+  status: EventStatus
+}
+
 export interface Task {
   id: string
   title: string
@@ -38,4 +46,5 @@ export interface Task {
   author: TaskUser
   assignees: TaskUser[]
   space: TaskSpace
+  eventDetails: TaskEventDetails | null
 }
