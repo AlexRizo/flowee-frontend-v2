@@ -6,8 +6,14 @@ import {
   AvatarGroupCount,
 } from '#/components/ui/avatar'
 import { Card, CardContent } from '#/components/ui/card'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '#/components/ui/tooltip'
 import { cn } from '#/lib/utils'
 import { avatarColorFor, initialsFor } from '../lib/avatar-color'
+import { formatDateTime } from '../lib/format-date'
 import { TASK_PRIORITY_CONFIG } from '../lib/task-priority'
 import { TASK_TYPE_CONFIG } from '../lib/task-type'
 import { truncate } from '../lib/truncate'
@@ -57,15 +63,16 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
             {visibleAssignees.length > 0 && (
               <AvatarGroup>
                 {visibleAssignees.map((assignee) => (
-                  <Avatar
-                    key={assignee.id}
-                    size="sm"
-                    title={assignee.name ?? assignee.username}
-                  >
-                    <AvatarFallback className={avatarColorFor(assignee.id)}>
-                      {initialsFor(assignee.name, assignee.username)}
-                    </AvatarFallback>
-                  </Avatar>
+                  <Tooltip key={assignee.id}>
+                    <TooltipTrigger asChild>
+                      <Avatar size="sm">
+                        <AvatarFallback className={avatarColorFor(assignee.id)}>
+                          {initialsFor(assignee.name, assignee.username)}
+                        </AvatarFallback>
+                      </Avatar>
+                    </TooltipTrigger>
+                    <TooltipContent>{assignee.username}</TooltipContent>
+                  </Tooltip>
                 ))}
                 {extraAssignees > 0 && (
                   <AvatarGroupCount className="size-6 text-[10px]">
@@ -76,20 +83,26 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
             )}
 
             {/* Fecha de creación */}
-            <span
-              className="flex size-6 items-center justify-center rounded-md text-muted-foreground"
-              title={`Creada ${dateFormatter.format(new Date(task.createdAt))}`}
-            >
-              <CalendarPlus className="size-3.5" />
-            </span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="flex size-6 items-center justify-center rounded-md text-muted-foreground">
+                  <CalendarPlus className="size-3.5" />
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>
+                Creada: {formatDateTime(new Date(task.createdAt))}
+              </TooltipContent>
+            </Tooltip>
 
             {/* Icono de tipo de tarea */}
-            <span
-              className="flex size-6 items-center justify-center rounded-md text-muted-foreground"
-              title={typeConfig.label}
-            >
-              <TypeIcon className="size-3.5" />
-            </span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="flex size-6 items-center justify-center rounded-md text-muted-foreground">
+                  <TypeIcon className="size-3.5" />
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>{typeConfig.label}</TooltipContent>
+            </Tooltip>
           </div>
 
           {/* Prioridad */}
@@ -122,11 +135,16 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
         </div>
 
         <div className="flex items-center justify-between py-2 px-4">
-          <Avatar size="sm" title={task.author.name ?? task.author.username}>
-            <AvatarFallback className={avatarColorFor(task.author.id)}>
-              {initialsFor(task.author.name, task.author.username)}
-            </AvatarFallback>
-          </Avatar>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Avatar size="sm">
+                <AvatarFallback className={avatarColorFor(task.author.id)}>
+                  {initialsFor(task.author.name, task.author.username)}
+                </AvatarFallback>
+              </Avatar>
+            </TooltipTrigger>
+            <TooltipContent>{task.author.username}</TooltipContent>
+          </Tooltip>
 
           {task.dueDate && (
             <div className="flex items-center gap-1 rounded-md px-1.5 py-0.5 text-xs text-muted-foreground">
