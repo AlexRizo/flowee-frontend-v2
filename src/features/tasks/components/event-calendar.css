@@ -26,11 +26,32 @@
   background: var(--muted);
 }
 
+/* react-big-calendar deja un :focus/:active gris (#e6e6e6) con sombra
+   interna en su CSS base; como el <button> conserva el foco después del
+   click, el botón se queda "pegado" en gris hasta que el usuario hace
+   click en otro lado. Lo reseteamos al estado normal y usamos un
+   focus-visible propio solo para navegación por teclado. */
+.rbc-toolbar button:focus,
+.rbc-toolbar button:active {
+  background: var(--background);
+  color: var(--foreground);
+  border-color: var(--border);
+  box-shadow: none;
+  outline: none;
+}
+
+.rbc-toolbar button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
 .rbc-toolbar button.rbc-active,
-.rbc-toolbar button.rbc-active:hover {
+.rbc-toolbar button.rbc-active:hover,
+.rbc-toolbar button.rbc-active:focus {
   background: var(--primary);
   color: var(--primary-foreground);
   border-color: var(--primary);
+  box-shadow: none;
 }
 
 .rbc-toolbar-label {
@@ -73,16 +94,53 @@
   background: color-mix(in oklch, var(--primary), transparent 92%);
 }
 
+/* react-big-calendar trae su propio azul (#3174ad) en .rbc-event; lo
+   neutralizamos para que las clases de color que pasamos vía
+   eventPropGetter (TASK_EVENT_STATUS_CONFIG) sean las que manden. */
 .rbc-event {
-  border: none;
+  background-color: transparent;
+  color: inherit;
+  border: 1px solid;
   border-radius: var(--radius-sm);
-  padding: 1px 6px;
+  padding: 6px 6px;
   font-size: 0.75rem;
   font-weight: 500;
 }
 
+/* .rbc-event.rbc-selected y .rbc-event:focus del CSS base tienen la misma
+   especificidad (dos "clases") que las reglas .rbc-event-<status> de
+   abajo, así que estas últimas ganan por venir después en la cascada —
+   sin eso, el azul de la librería pisaría el color por status sin
+   importar qué className le pasemos desde eventPropGetter. */
+.rbc-event:focus {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
 .rbc-event.rbc-selected {
   outline: 2px solid var(--ring);
+  outline-offset: 1px;
+  transition: all 0.3s ease-in;
+}
+
+.rbc-event.rbc-event-pending {
+  background-color: var(--muted);
+  border-color: var(--border);
+}
+
+.rbc-event.rbc-event-scheduled {
+  background-color: color-mix(in oklch, var(--status-attention), transparent 90%);
+  border-color: var(--status-attention);
+}
+
+.rbc-event.rbc-event-attending {
+  background-color: color-mix(in oklch, var(--destructive), transparent 90%);
+  border-color: var(--destructive);
+}
+
+.rbc-event.rbc-event-finished {
+  background-color: var(--secondary);
+  border-color: var(--secondary);
 }
 
 .rbc-show-more {
