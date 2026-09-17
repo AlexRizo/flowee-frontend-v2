@@ -3,6 +3,8 @@ import { SidebarTrigger } from '#/components/ui/sidebar'
 import { Plus } from 'lucide-react'
 import { Breadcrumbs } from './breadcrumbs'
 import { SelectSpaceToCreateTask } from './select-space-to-create-task'
+import { NavbarSearch } from './search-navbar'
+import { NavbarNotifications } from './notifications-navbar'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from '@tanstack/react-router'
 
@@ -38,8 +40,9 @@ export const NavbarApp = () => {
         </div>
         <Breadcrumbs />
       </div>
-      <div>
-        {/* TODO: Especio disponible! */}
+      <div className="flex items-center gap-2">
+        <NavbarSearch />
+        <NavbarNotifications />
         <Button size="sm" className="text-xs" onClick={handleCreateTask}>
           <Plus /> Nueva Tarea
         </Button>

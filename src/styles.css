@@ -55,6 +55,9 @@ body {
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+  --color-status-attention: var(--status-attention);
+  --color-status-progress: var(--status-progress);
+  --color-status-done: var(--status-done);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -88,6 +91,12 @@ body {
   --chart-3: oklch(0.541 0.281 293.009);
   --chart-4: oklch(0.491 0.27 292.581);
   --chart-5: oklch(0.432 0.232 292.759);
+  /* Estados de tarea que no tienen un hue equivalente en el resto del
+     tema (amber/blue/green) — se usan siempre a la misma intensidad que
+     --chart-*, por eso no varían entre :root y .dark, igual que ellos. */
+  --status-attention: oklch(0.75 0.15 80);
+  --status-progress: oklch(0.6 0.18 255);
+  --status-done: oklch(0.65 0.15 150);
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -123,6 +132,9 @@ body {
   --chart-3: oklch(0.541 0.281 293.009);
   --chart-4: oklch(0.491 0.27 292.581);
   --chart-5: oklch(0.432 0.232 292.759);
+  --status-attention: oklch(0.75 0.15 80);
+  --status-progress: oklch(0.6 0.18 255);
+  --status-done: oklch(0.65 0.15 150);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.606 0.25 292.717);
