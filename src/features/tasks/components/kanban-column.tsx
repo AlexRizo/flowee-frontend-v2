@@ -13,7 +13,7 @@ export function KanbanColumn({ status, tasks, onTaskClick }: KanbanColumnProps) 
   const config = TASK_STATUS_CONFIG[status]
 
   return (
-    <div className="flex min-w-[240px] max-w-[280px] flex-1 basis-[240px] flex-col gap-3.5">
+    <div className="flex min-w-60 max-w-70 flex-1 basis-60 flex-col gap-3.5">
       <div
         className={cn(
           'flex items-center justify-between rounded-lg border border-l-4 px-3 py-2.5',
@@ -32,7 +32,7 @@ export function KanbanColumn({ status, tasks, onTaskClick }: KanbanColumnProps) 
 
       <div className="flex flex-col gap-3">
         {tasks.length === 0 ? (
-          <div className="flex min-h-[60px] items-center justify-center rounded-lg border border-dashed border-border/70 px-3 py-5 text-[12.5px] text-muted-foreground">
+          <div className="flex min-h-15 items-center justify-center rounded-lg border border-dashed border-border/70 px-3 py-5 text-[12.5px] text-muted-foreground">
             Sin tareas
           </div>
         ) : (
