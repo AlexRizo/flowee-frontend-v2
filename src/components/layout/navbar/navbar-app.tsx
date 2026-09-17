@@ -33,7 +33,7 @@ export const NavbarApp = () => {
   }, [location.pathname])
 
   return (
-    <header className="flex flex-row items-center justify-between border-b py-2.5 gap-2 pr-3">
+    <header className="flex shrink-0 flex-row items-center justify-between border-b py-2.5 gap-2 pr-3">
       <div className="flex items-center gap-2">
         <div className="border-r px-3 mr-3">
           <SidebarTrigger />

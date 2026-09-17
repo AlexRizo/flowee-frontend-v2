@@ -33,9 +33,10 @@ const DESCRIPTION_MAX_LENGTH = 90
 interface TaskCardProps {
   task: Task
   onClick?: (task: Task) => void
+  isDragging?: boolean
 }
 
-export function TaskCard({ task, onClick }: TaskCardProps) {
+export function TaskCard({ task, onClick, isDragging }: TaskCardProps) {
   const typeConfig = TASK_TYPE_CONFIG[task.type]
   const priorityConfig = TASK_PRIORITY_CONFIG[task.priority]
   const TypeIcon = typeConfig.icon
@@ -48,7 +49,10 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
     <Card
       size="sm"
       onClick={() => onClick?.(task)}
-      className="cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md hover:ring-primary/40 p-0"
+      className={cn(
+        'cursor-pointer p-0 transition-all hover:-translate-y-0.5 hover:shadow-md hover:ring-primary/40',
+        isDragging && 'opacity-40',
+      )}
     >
       <CardContent className="p-0 gap-0">
         <div

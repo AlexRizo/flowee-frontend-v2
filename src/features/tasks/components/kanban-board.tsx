@@ -1,7 +1,16 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  DndContext,
+  DragOverlay,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core'
+import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
 import { TASK_STATUS_ORDER } from '../lib/task-status'
 import type { Task, TaskStatus } from '../types'
 import { KanbanColumn } from './kanban-column'
+import { TaskCard } from './task-card'
 
 interface KanbanBoardProps {
   tasks: Task[]
@@ -9,26 +18,68 @@ interface KanbanBoardProps {
 }
 
 export function KanbanBoard({ tasks, onTaskClick }: KanbanBoardProps) {
+  const [localTasks, setLocalTasks] = useState(tasks)
+  const [activeTask, setActiveTask] = useState<Task | null>(null)
+
+  // Resincroniza si llegan datos nuevos del servidor (refetch, navegación).
+  useEffect(() => {
+    setLocalTasks(tasks)
+  }, [tasks])
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+  )
+
   const tasksByStatus = useMemo(() => {
     const grouped = new Map<TaskStatus, Task[]>(
       TASK_STATUS_ORDER.map((status) => [status, []]),
     )
-    for (const task of tasks) {
+    for (const task of localTasks) {
       grouped.get(task.status)?.push(task)
     }
     return grouped
-  }, [tasks])
+  }, [localTasks])
+
+  const handleDragStart = ({ active }: DragStartEvent) => {
+    setActiveTask(localTasks.find((task) => task.id === active.id) ?? null)
+  }
+
+  const handleDragEnd = ({ active, over }: DragEndEvent) => {
+    setActiveTask(null)
+    if (!over) return
+
+    const nextStatus = over.id as TaskStatus
+    const taskId = active.id as string
+    const task = localTasks.find((t) => t.id === taskId)
+    if (!task || task.status === nextStatus) return
+
+    // Fase 1: solo mueve la tarjeta visualmente entre columnas. La
+    // persistencia (PATCH al backend + reglas de permisos) se agrega en el
+    // siguiente paso.
+    setLocalTasks((prev) =>
+      prev.map((t) => (t.id === taskId ? { ...t, status: nextStatus } : t)),
+    )
+  }
 
   return (
-    <div className="flex items-start gap-5 overflow-x-auto pb-2 px-px">
-      {TASK_STATUS_ORDER.map((status) => (
-        <KanbanColumn
-          key={status}
-          status={status}
-          tasks={tasksByStatus.get(status) ?? []}
-          onTaskClick={onTaskClick}
-        />
-      ))}
-    </div>
+    <DndContext
+      sensors={sensors}
+      autoScroll={{ threshold: { x: 0.2, y: 0 } }}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
+      <div className="flex items-start gap-5 overflow-x-auto px-2 pb-2 no-scrollbar">
+        {TASK_STATUS_ORDER.map((status) => (
+          <KanbanColumn
+            key={status}
+            status={status}
+            tasks={tasksByStatus.get(status) ?? []}
+            onTaskClick={onTaskClick}
+          />
+        ))}
+      </div>
+
+      <DragOverlay>{activeTask && <TaskCard task={activeTask} />}</DragOverlay>
+    </DndContext>
   )
 }
