@@ -39,7 +39,7 @@ function RouteComponent() {
       <AppSidebar />
       <SidebarInset>
         <NavbarApp />
-        <main className="container mx-auto min-h-0 flex-1 overflow-y-auto py-6 no-scrollbar">
+        <main className="container mx-auto min-h-0 min-w-0 flex-1 overflow-auto py-6 no-scrollbar px-px">
           <Outlet />
         </main>
       </SidebarInset>

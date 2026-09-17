@@ -35,7 +35,7 @@ export function TaskListRow({ task, onClick }: TaskListRowProps) {
   return (
     <div
       onClick={() => onClick?.(task)}
-      className="flex cursor-pointer items-center gap-3 border-b border-border px-4 py-2.5 last:border-b-0 hover:bg-muted/40"
+      className="flex cursor-pointer items-center gap-3 border-border px-4 py-2.5 hover:bg-muted/40"
     >
       <span
         className={cn(

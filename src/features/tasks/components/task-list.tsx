@@ -47,7 +47,7 @@ export function TaskList({ tasks, onTaskClick }: TaskListProps) {
               </span>
             </div>
 
-            <Card size="sm" className="py-0">
+            <Card size="sm" className="py-0 divide-y gap-0">
               {statusTasks.map((task) => (
                 <TaskListRow key={task.id} task={task} onClick={onTaskClick} />
               ))}
