@@ -1,6 +1,7 @@
 import type { Space } from '#/features/space/types'
 import { Link } from '@tanstack/react-router'
 import type { FC } from 'react'
+import { SpaceIcon } from './space-icon'
 
 interface Props extends Space {}
 
@@ -13,14 +14,7 @@ export const SpaceItem: FC<Props> = ({ name, color, code }) => {
       role="gridcell"
       className="flex flex-col items-center gap-2"
     >
-      <span
-        style={{
-          backgroundColor: color,
-        }}
-        className="text-white size-10 rounded text-center place-content-center"
-      >
-        {name[0]}
-      </span>
+      <SpaceIcon name={name} color={color} />
       <span className="text-center truncate font-semibold text-xs">{name}</span>
     </Link>
   )

@@ -9,11 +9,12 @@ import {
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
 import { toast } from 'sonner'
 import { Button } from '#/components/ui/button'
-import { TaskCard } from '#/features/tasks/components/task-card'
 import type { Task } from '#/features/tasks/types'
 import { useBulkAssignTasks } from '../queries/assignments.queries'
 import type { Staff } from '../types'
 import { AssignmentColumn } from './assignment-column'
+import { AssignmentCardVisual } from './draggable-assignment-card'
+import { Rocket, Save, Send } from 'lucide-react'
 
 const UNASSIGNED_COLUMN_ID = 'unassigned'
 
@@ -34,6 +35,7 @@ export function AssignmentBoard({
 }: AssignmentBoardProps) {
   const [pending, setPending] = useState<Record<string, string>>({})
   const [activeTask, setActiveTask] = useState<Task | null>(null)
+  const [activeIsPending, setActiveIsPending] = useState(false)
   const bulkAssign = useBulkAssignTasks(workspaceCode, spaceCode)
 
   // Si llegan datos nuevos del servidor (refetch, cambio de space), se
@@ -73,7 +75,9 @@ export function AssignmentBoard({
   }, [pending, staff, tasksById])
 
   const handleDragStart = ({ active }: DragStartEvent) => {
-    setActiveTask(tasksById.get(active.id as string) ?? null)
+    const taskId = active.id as string
+    setActiveTask(tasksById.get(taskId) ?? null)
+    setActiveIsPending(taskId in pending)
   }
 
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
@@ -116,17 +120,17 @@ export function AssignmentBoard({
   }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-4">
-      <div className="flex items-center justify-end">
-        <Button
-          onClick={handleSave}
-          disabled={pendingCount === 0 || bulkAssign.isPending}
-        >
-          {bulkAssign.isPending
-            ? 'Guardando…'
-            : `Asignar${pendingCount ? ` (${pendingCount})` : ''}`}
-        </Button>
-      </div>
+    <div className="flex min-h-0 flex-1 relative">
+      <Button
+        className="absolute top-0 right-0"
+        onClick={handleSave}
+        disabled={pendingCount === 0 || bulkAssign.isPending}
+      >
+        <Rocket />
+        {bulkAssign.isPending
+          ? 'Guardando…'
+          : `Asignar ${pendingCount ? `(${pendingCount})` : ''}`}
+      </Button>
 
       <DndContext
         sensors={sensors}
@@ -156,7 +160,9 @@ export function AssignmentBoard({
         </div>
 
         <DragOverlay>
-          {activeTask && <TaskCard task={activeTask} />}
+          {activeTask && (
+            <AssignmentCardVisual task={activeTask} pending={activeIsPending} />
+          )}
         </DragOverlay>
       </DndContext>
     </div>

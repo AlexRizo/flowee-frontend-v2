@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { createFileRoute, redirect, useLoaderData } from '@tanstack/react-router'
+import {
+  createFileRoute,
+  redirect,
+  useLoaderData,
+} from '@tanstack/react-router'
 import {
   Select,
   SelectContent,
@@ -10,8 +14,12 @@ import {
 } from '#/components/ui/select'
 import { AssignmentBoard } from '#/features/assignments/components/assignment-board'
 import { staffForSpaceQueryOptions } from '#/features/assignments/queries/assignments.queries'
-import { spaceTasksQueryOptions, taskKeys } from '#/features/tasks/queries/tasks.queries'
+import {
+  spaceTasksQueryOptions,
+  taskKeys,
+} from '#/features/tasks/queries/tasks.queries'
 import { queryClient } from '#/lib/query-client'
+import { SpaceIcon } from '#/components/layout/navbar/space-icon'
 
 const TASKS_TAKE = 500
 
@@ -61,12 +69,17 @@ function RouteComponent() {
         </div>
 
         <Select value={spaceCode} onValueChange={setSpaceCode}>
-          <SelectTrigger>
+          <SelectTrigger className="w-[200px] ">
             <SelectValue placeholder="Selecciona un space" />
           </SelectTrigger>
           <SelectContent>
             {spaces.map((space) => (
               <SelectItem key={space.code} value={space.code}>
+                <SpaceIcon
+                  name={space.name}
+                  color={space.color}
+                  className="size-4 text-xs"
+                />
                 {space.name}
               </SelectItem>
             ))}

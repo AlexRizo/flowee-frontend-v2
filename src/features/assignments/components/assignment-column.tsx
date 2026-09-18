@@ -63,7 +63,7 @@ export function AssignmentColumn({
     <div className="relative flex min-w-64 max-w-72 flex-1 basis-64 flex-col gap-3.5">
       <div
         className={cn(
-          'flex items-center gap-1.5 px-3 py-2.5 border border-l-4 sticky top-0 z-10 backdrop-blur-md',
+          'flex items-center gap-1.5 px-3 py-2.5 border border-l-4 sticky top-0 z-15 backdrop-blur-md',
           isUser && 'bg-neutral-700 rounded-lg text-white',
           isUser && workloadBorderClass(activeCount),
           !isUser && 'bg-orange-50 rounded-lg border-orange-400',
