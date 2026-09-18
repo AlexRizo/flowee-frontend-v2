@@ -143,6 +143,7 @@ export function AssignmentBoard({
           />
           {staff.map((member) => (
             <AssignmentColumn
+              isUser
               key={member.id}
               id={member.id}
               title={member.name ?? member.username}
@@ -153,7 +154,9 @@ export function AssignmentBoard({
           ))}
         </div>
 
-        <DragOverlay>{activeTask && <TaskCard task={activeTask} />}</DragOverlay>
+        <DragOverlay>
+          {activeTask && <TaskCard task={activeTask} />}
+        </DragOverlay>
       </DndContext>
     </div>
   )

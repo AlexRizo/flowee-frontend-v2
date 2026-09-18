@@ -13,6 +13,8 @@ interface AssignmentColumnProps {
   draggableTasks: Task[]
   /** true en columnas de STAFF: marca draggableTasks como "por guardar". */
   pending?: boolean
+
+  isUser?: boolean
 }
 
 export function AssignmentColumn({
@@ -21,13 +23,20 @@ export function AssignmentColumn({
   existingTasks,
   draggableTasks,
   pending,
+  isUser,
 }: AssignmentColumnProps) {
   const { setNodeRef, isOver } = useDroppable({ id })
   const total = existingTasks.length + draggableTasks.length
 
   return (
     <div className="flex min-w-64 max-w-72 flex-1 basis-64 flex-col gap-3.5">
-      <div className="flex items-baseline gap-1.5 rounded-lg border border-border bg-card px-3 py-2.5">
+      <div
+        className={cn(
+          'flex items-baseline gap-1.5 px-3 py-2.5 border border-l-4',
+          isUser && 'bg-neutral-700 rounded-lg border-green-600',
+          !isUser && 'bg-orange-50 rounded-lg border-orange-400',
+        )}
+      >
         <span className="text-sm font-semibold">{title}</span>
         <span className="text-[13px] text-muted-foreground">({total})</span>
       </div>

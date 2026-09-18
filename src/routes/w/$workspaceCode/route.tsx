@@ -1,8 +1,5 @@
 import { AppSidebar } from '#/components/layout/sidebar/app-sidebar'
-import {
-  SidebarInset,
-  SidebarProvider,
-} from '#/components/ui/sidebar'
+import { SidebarInset, SidebarProvider } from '#/components/ui/sidebar'
 import { mySpacesQueryOptions } from '#/features/space/queries/space.queries'
 import { meWorkspacesQueryOptions } from '#/features/workspace/queries/workspace.queries'
 import { queryClient } from '#/lib/query-client'
@@ -39,8 +36,10 @@ function RouteComponent() {
       <AppSidebar />
       <SidebarInset>
         <NavbarApp />
-        <main className="container mx-auto min-h-0 min-w-0 flex-1 overflow-auto py-6 no-scrollbar px-px">
-          <Outlet />
+        <main className="min-h-0 min-w-0 flex-1 overflow-auto p-6 no-scrollbar">
+          <div className="size-full container mx-auto">
+            <Outlet />
+          </div>
         </main>
       </SidebarInset>
     </SidebarProvider>
