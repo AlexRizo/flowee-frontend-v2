@@ -1,5 +1,5 @@
 import { api } from '#/lib/api-client'
-import type { Task } from '../types'
+import type { Task, TaskStatus } from '../types'
 
 export const tasksApi = {
   getWorkspaceTasks: (workspaceCode: string, take = 25) =>
@@ -15,5 +15,15 @@ export const tasksApi = {
   getSpaceTasks: (workspaceCode: string, spaceCode: string, take = 25) =>
     api<Task[]>(
       `/workspaces/${workspaceCode}/spaces/${spaceCode}/tasks?take=${take}`,
+    ),
+  updateStatus: (
+    workspaceCode: string,
+    spaceCode: string,
+    taskId: string,
+    status: TaskStatus,
+  ) =>
+    api<Task>(
+      `/workspaces/${workspaceCode}/spaces/${spaceCode}/tasks/${taskId}/status`,
+      { method: 'PATCH', body: { status } },
     ),
 }

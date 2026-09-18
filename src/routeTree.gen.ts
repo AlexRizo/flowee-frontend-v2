@@ -16,6 +16,7 @@ import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 import { Route as AuthSigninRouteImport } from './routes/auth/signin'
 import { Route as WWorkspaceCodeRouteRouteImport } from './routes/w/$workspaceCode/route'
 import { Route as WWorkspaceCodeIndexRouteImport } from './routes/w/$workspaceCode/index'
+import { Route as WWorkspaceCodeUsersRouteImport } from './routes/w/$workspaceCode/users'
 import { Route as WWorkspaceCodeMyTasksRouteImport } from './routes/w/$workspaceCode/my-tasks'
 import { Route as WWorkspaceCodeEventsRouteImport } from './routes/w/$workspaceCode/events'
 import { Route as WWorkspaceCodeAssignmentsRouteImport } from './routes/w/$workspaceCode/assignments'
@@ -56,6 +57,11 @@ const WWorkspaceCodeRouteRoute = WWorkspaceCodeRouteRouteImport.update({
 const WWorkspaceCodeIndexRoute = WWorkspaceCodeIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => WWorkspaceCodeRouteRoute,
+} as any)
+const WWorkspaceCodeUsersRoute = WWorkspaceCodeUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
   getParentRoute: () => WWorkspaceCodeRouteRoute,
 } as any)
 const WWorkspaceCodeMyTasksRoute = WWorkspaceCodeMyTasksRouteImport.update({
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/w/$workspaceCode/assignments': typeof WWorkspaceCodeAssignmentsRoute
   '/w/$workspaceCode/events': typeof WWorkspaceCodeEventsRoute
   '/w/$workspaceCode/my-tasks': typeof WWorkspaceCodeMyTasksRoute
+  '/w/$workspaceCode/users': typeof WWorkspaceCodeUsersRoute
   '/w/$workspaceCode/': typeof WWorkspaceCodeIndexRoute
   '/w/$workspaceCode/s/$spaceCode/': typeof WWorkspaceCodeSSpaceCodeIndexRoute
   '/w/$workspaceCode/s/$spaceCode/tasks/create/event-task': typeof WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRoute
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/w/$workspaceCode/assignments': typeof WWorkspaceCodeAssignmentsRoute
   '/w/$workspaceCode/events': typeof WWorkspaceCodeEventsRoute
   '/w/$workspaceCode/my-tasks': typeof WWorkspaceCodeMyTasksRoute
+  '/w/$workspaceCode/users': typeof WWorkspaceCodeUsersRoute
   '/w/$workspaceCode': typeof WWorkspaceCodeIndexRoute
   '/w/$workspaceCode/s/$spaceCode': typeof WWorkspaceCodeSSpaceCodeIndexRoute
   '/w/$workspaceCode/s/$spaceCode/tasks/create/event-task': typeof WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRoute
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/w/$workspaceCode/assignments': typeof WWorkspaceCodeAssignmentsRoute
   '/w/$workspaceCode/events': typeof WWorkspaceCodeEventsRoute
   '/w/$workspaceCode/my-tasks': typeof WWorkspaceCodeMyTasksRoute
+  '/w/$workspaceCode/users': typeof WWorkspaceCodeUsersRoute
   '/w/$workspaceCode/': typeof WWorkspaceCodeIndexRoute
   '/w/$workspaceCode/s/$spaceCode/': typeof WWorkspaceCodeSSpaceCodeIndexRoute
   '/w/$workspaceCode/s/$spaceCode/tasks/create/event-task': typeof WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRoute
@@ -149,6 +158,7 @@ export interface FileRouteTypes {
     | '/w/$workspaceCode/assignments'
     | '/w/$workspaceCode/events'
     | '/w/$workspaceCode/my-tasks'
+    | '/w/$workspaceCode/users'
     | '/w/$workspaceCode/'
     | '/w/$workspaceCode/s/$spaceCode/'
     | '/w/$workspaceCode/s/$spaceCode/tasks/create/event-task'
@@ -162,6 +172,7 @@ export interface FileRouteTypes {
     | '/w/$workspaceCode/assignments'
     | '/w/$workspaceCode/events'
     | '/w/$workspaceCode/my-tasks'
+    | '/w/$workspaceCode/users'
     | '/w/$workspaceCode'
     | '/w/$workspaceCode/s/$spaceCode'
     | '/w/$workspaceCode/s/$spaceCode/tasks/create/event-task'
@@ -177,6 +188,7 @@ export interface FileRouteTypes {
     | '/w/$workspaceCode/assignments'
     | '/w/$workspaceCode/events'
     | '/w/$workspaceCode/my-tasks'
+    | '/w/$workspaceCode/users'
     | '/w/$workspaceCode/'
     | '/w/$workspaceCode/s/$spaceCode/'
     | '/w/$workspaceCode/s/$spaceCode/tasks/create/event-task'
@@ -238,6 +250,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/w/$workspaceCode/'
       preLoaderRoute: typeof WWorkspaceCodeIndexRouteImport
+      parentRoute: typeof WWorkspaceCodeRouteRoute
+    }
+    '/w/$workspaceCode/users': {
+      id: '/w/$workspaceCode/users'
+      path: '/users'
+      fullPath: '/w/$workspaceCode/users'
+      preLoaderRoute: typeof WWorkspaceCodeUsersRouteImport
       parentRoute: typeof WWorkspaceCodeRouteRoute
     }
     '/w/$workspaceCode/my-tasks': {
@@ -305,6 +324,7 @@ interface WWorkspaceCodeRouteRouteChildren {
   WWorkspaceCodeAssignmentsRoute: typeof WWorkspaceCodeAssignmentsRoute
   WWorkspaceCodeEventsRoute: typeof WWorkspaceCodeEventsRoute
   WWorkspaceCodeMyTasksRoute: typeof WWorkspaceCodeMyTasksRoute
+  WWorkspaceCodeUsersRoute: typeof WWorkspaceCodeUsersRoute
   WWorkspaceCodeIndexRoute: typeof WWorkspaceCodeIndexRoute
   WWorkspaceCodeSSpaceCodeIndexRoute: typeof WWorkspaceCodeSSpaceCodeIndexRoute
   WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRoute: typeof WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRoute
@@ -315,6 +335,7 @@ const WWorkspaceCodeRouteRouteChildren: WWorkspaceCodeRouteRouteChildren = {
   WWorkspaceCodeAssignmentsRoute: WWorkspaceCodeAssignmentsRoute,
   WWorkspaceCodeEventsRoute: WWorkspaceCodeEventsRoute,
   WWorkspaceCodeMyTasksRoute: WWorkspaceCodeMyTasksRoute,
+  WWorkspaceCodeUsersRoute: WWorkspaceCodeUsersRoute,
   WWorkspaceCodeIndexRoute: WWorkspaceCodeIndexRoute,
   WWorkspaceCodeSSpaceCodeIndexRoute: WWorkspaceCodeSSpaceCodeIndexRoute,
   WWorkspaceCodeSSpaceCodeTasksCreateEventTaskRoute:

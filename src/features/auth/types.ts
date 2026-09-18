@@ -3,8 +3,8 @@
 
 import type { Workspace } from "../workspace/types"
 
-export type UserRole = 'CLIENT' | 'ADMIN' | 'SUPERADMIN'
-export type UserStatus = 'ACTIVE' | 'INACTIVE' | 'BANNED'
+export type UserRole = 'ADMIN' | 'STAFF' | 'CLIENT_ADMIN' | 'CLIENT_STAFF' | 'CLIENT'
+export type UserStatus = 'PENDING' | 'ACTIVE' | 'SUSPENDED' | 'DELETED'
 export type AuthProvider = 'LOCAL' | 'GOOGLE'
 
 /** User del backend sin `password` ni `twoFactorSecret` (ver `toPublicUser`). */

@@ -1,5 +1,6 @@
-import { queryOptions, useQuery } from '@tanstack/react-query'
+import { queryOptions, useMutation, useQuery } from '@tanstack/react-query'
 import { tasksApi } from '../api/tasks.api'
+import type { TaskStatus } from '../types'
 
 export const taskKeys = {
   workspace: (workspaceCode: string, take: number) =>
@@ -64,3 +65,19 @@ export const useSpaceTasks = (
   spaceCode: string,
   take = 25,
 ) => useQuery(spaceTasksQueryOptions(workspaceCode, spaceCode, take))
+
+// El tablero general mezcla tareas de varios Spaces de un mismo Workspace,
+// así que el space no es fijo por board: se recibe por llamada (viene de
+// `task.space.code` de la tarea que se está moviendo).
+export const useUpdateTaskStatus = (workspaceCode: string) =>
+  useMutation({
+    mutationFn: ({
+      spaceCode,
+      taskId,
+      status,
+    }: {
+      spaceCode: string
+      taskId: string
+      status: TaskStatus
+    }) => tasksApi.updateStatus(workspaceCode, spaceCode, taskId, status),
+  })

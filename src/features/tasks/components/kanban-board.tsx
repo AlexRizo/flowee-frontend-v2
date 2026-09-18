@@ -7,17 +7,24 @@ import {
   useSensors,
 } from '@dnd-kit/core'
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
+import { toast } from 'sonner'
+import { useUpdateTaskStatus } from '../queries/tasks.queries'
 import { TASK_STATUS_ORDER } from '../lib/task-status'
 import type { Task, TaskStatus } from '../types'
 import { KanbanColumn } from './kanban-column'
 import { TaskCard } from './task-card'
 
 interface KanbanBoardProps {
+  workspaceCode: string
   tasks: Task[]
   onTaskClick?: (task: Task) => void
 }
 
-export function KanbanBoard({ tasks, onTaskClick }: KanbanBoardProps) {
+export function KanbanBoard({
+  workspaceCode,
+  tasks,
+  onTaskClick,
+}: KanbanBoardProps) {
   // Las tareas EVENT no viven en el kanban, tienen su propio calendario en
   // /eventos.
   const boardTasks = useMemo(
@@ -27,6 +34,7 @@ export function KanbanBoard({ tasks, onTaskClick }: KanbanBoardProps) {
 
   const [localTasks, setLocalTasks] = useState(boardTasks)
   const [activeTask, setActiveTask] = useState<Task | null>(null)
+  const updateStatus = useUpdateTaskStatus(workspaceCode)
 
   // Resincroniza si llegan datos nuevos del servidor (refetch, navegación).
   useEffect(() => {
@@ -51,6 +59,12 @@ export function KanbanBoard({ tasks, onTaskClick }: KanbanBoardProps) {
     setActiveTask(localTasks.find((task) => task.id === active.id) ?? null)
   }
 
+  const setTaskStatus = (taskId: string, status: TaskStatus) => {
+    setLocalTasks((prev) =>
+      prev.map((t) => (t.id === taskId ? { ...t, status } : t)),
+    )
+  }
+
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
     setActiveTask(null)
     if (!over) return
@@ -60,11 +74,20 @@ export function KanbanBoard({ tasks, onTaskClick }: KanbanBoardProps) {
     const task = localTasks.find((t) => t.id === taskId)
     if (!task || task.status === nextStatus) return
 
-    // Fase 1: solo mueve la tarjeta visualmente entre columnas. La
-    // persistencia (PATCH al backend + reglas de permisos) se agrega en el
-    // siguiente paso.
-    setLocalTasks((prev) =>
-      prev.map((t) => (t.id === taskId ? { ...t, status: nextStatus } : t)),
+    const previousStatus = task.status
+
+    // Optimista: se mueve la tarjeta de inmediato; si el backend rechaza el
+    // cambio (permisos, tarea eliminada, etc.) se revierte y se avisa.
+    setTaskStatus(taskId, nextStatus)
+
+    updateStatus.mutate(
+      { spaceCode: task.space.code, taskId, status: nextStatus },
+      {
+        onError: () => {
+          setTaskStatus(taskId, previousStatus)
+          toast.error('No se pudo actualizar el status de la tarea')
+        },
+      },
     )
   }
 

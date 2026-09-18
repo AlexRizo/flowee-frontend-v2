@@ -2,6 +2,7 @@ import { AppSidebar } from '#/components/layout/sidebar/app-sidebar'
 import { SidebarInset, SidebarProvider } from '#/components/ui/sidebar'
 import { mySpacesQueryOptions } from '#/features/space/queries/space.queries'
 import { meWorkspacesQueryOptions } from '#/features/workspace/queries/workspace.queries'
+import { useRealtimeTaskUpdates } from '#/features/tasks/hooks/use-realtime-task-updates'
 import { queryClient } from '#/lib/query-client'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { NavbarApp } from '#/components/layout/navbar/navbar-app'
@@ -31,6 +32,8 @@ export const Route = createFileRoute('/w/$workspaceCode')({
 })
 
 function RouteComponent() {
+  useRealtimeTaskUpdates()
+
   return (
     <SidebarProvider>
       <AppSidebar />

@@ -42,7 +42,7 @@ function RouteComponent() {
       {isLoading ? (
         <p className="text-sm text-muted-foreground">Cargando tareas…</p>
       ) : (
-        <KanbanBoard tasks={tasks ?? []} />
+        <KanbanBoard workspaceCode={workspaceCode} tasks={tasks ?? []} />
       )}
     </div>
   )

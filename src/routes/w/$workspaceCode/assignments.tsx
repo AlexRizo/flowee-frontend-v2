@@ -69,7 +69,7 @@ function RouteComponent() {
         </div>
 
         <Select value={spaceCode} onValueChange={setSpaceCode}>
-          <SelectTrigger className="w-[200px] ">
+          <SelectTrigger className="w-50">
             <SelectValue placeholder="Selecciona un space" />
           </SelectTrigger>
           <SelectContent>
