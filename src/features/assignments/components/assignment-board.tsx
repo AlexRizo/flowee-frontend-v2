@@ -147,6 +147,7 @@ export function AssignmentBoard({
               key={member.id}
               id={member.id}
               title={member.name ?? member.username}
+              member={member}
               existingTasks={assignedByStaff.get(member.id) ?? []}
               draggableTasks={pendingByStaff.get(member.id) ?? []}
               pending
